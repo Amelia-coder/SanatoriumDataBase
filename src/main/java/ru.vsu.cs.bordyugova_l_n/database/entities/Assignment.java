@@ -5,7 +5,7 @@ import lombok.*;
 
 
 @Entity
-@Table(name = "Assignment")
+@Table(name = "assignment")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -13,39 +13,40 @@ import lombok.*;
 public class Assignment {
 
     @Id
-    @Column(name = "ID")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "TicketID", nullable = false)
+    @JoinColumn(name = "ticketid", nullable = false)
     private Ticket ticket;
 
     @ManyToOne
-    @JoinColumn(name = "ProcedureID", nullable = false)
+    @JoinColumn(name = "procedureid", nullable = false)
     private Procedure procedure;
 
-    @Column(name = "StartTime", nullable = false)
     @Temporal(TemporalType.TIME)
+    @Column(name = "starttime", nullable = false)
     private java.util.Date startTime;
 
-    @Column(name = "Quantity", nullable = false)
+    @Column(name = "quantity", nullable = false)
     private Integer quantity;
 
     @ManyToOne
-    @JoinColumn(name = "StaffID", nullable = false)
+    @JoinColumn(name = "staffid", nullable = false)
     private Staff staff;
 
     @ManyToOne
-    @JoinColumn(name = "OfficeNumber", nullable = false)
+    @JoinColumn(name = "officenumber", nullable = false)
     private Office office;
 
     public void update(Assignment assignment) {
-        this.ticket = assignment.ticket;
-        this.procedure = assignment.procedure;
-        this.startTime = assignment.startTime;
-        this.quantity = assignment.quantity;
-        this.staff = assignment.staff;
-        this.office = assignment.office;
+        if (assignment.ticket != null) this.ticket = assignment.ticket;
+        if (assignment.procedure != null) this.procedure = assignment.procedure;
+        if (assignment.startTime != null) this.startTime = assignment.startTime;
+        if (assignment.quantity != null) this.quantity = assignment.quantity;
+        if (assignment.staff != null) this.staff = assignment.staff;
+        if (assignment.office != null) this.office = assignment.office;
     }
-
 }
+

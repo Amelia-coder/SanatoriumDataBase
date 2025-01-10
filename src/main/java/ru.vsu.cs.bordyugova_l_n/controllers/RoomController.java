@@ -7,7 +7,7 @@ import ru.vsu.cs.bordyugova_l_n.services.RoomService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/rooms")
+@RequestMapping("/api/room")
 public class RoomController {
     private final RoomService service;
 

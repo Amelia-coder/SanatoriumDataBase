@@ -3,8 +3,10 @@ package ru.vsu.cs.bordyugova_l_n.database.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Entity
-@Table(name = "Office")
+@Table(name = "office")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -12,18 +14,21 @@ import lombok.*;
 public class Office {
 
     @Id
-    @Column(name = "Number")
+    @Column(name = "number")
     private Integer number;
 
-    @Column(name = "Floor", nullable = false)
+    @Column(name = "floor", nullable = false)
     private Integer floor;
 
-    @Column(name = "Building", nullable = false)
+    @Column(name = "building", nullable = false)
     private String building;
 
-    public void update(Office office) {
-        this.floor = office.floor;
-        this.building = office.building;
-    }
+    @OneToMany(mappedBy = "office")
+    private List<Assignment> assignments;
 
+    public void update(Office office) {
+        if (office.floor != null) this.floor = office.floor;
+        if (office.building != null) this.building = office.building;
+    }
 }
+

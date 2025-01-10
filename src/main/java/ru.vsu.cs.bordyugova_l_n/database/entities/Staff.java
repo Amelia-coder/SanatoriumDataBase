@@ -3,8 +3,10 @@ package ru.vsu.cs.bordyugova_l_n.database.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Entity
-@Table(name = "Staff")
+@Table(name = "staff")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -12,35 +14,38 @@ import lombok.*;
 public class Staff {
 
     @Id
-    @Column(name = "ID")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Integer id;
 
-    @Column(name = "FirstName", nullable = false)
+    @Column(name = "firstname", nullable = false)
     private String firstName;
 
-    @Column(name = "LastName", nullable = false)
+    @Column(name = "lastname", nullable = false)
     private String lastName;
 
-    @Column(name = "MiddleName")
+    @Column(name = "middlename")
     private String middleName;
 
-    @Column(name = "Phone", unique = true)
+    @Column(name = "phone", unique = true)
     private String phone;
 
-    @Column(name = "Email", unique = true)
+    @Column(name = "email", unique = true)
     private String email;
 
-    @Column(name = "Position", nullable = false)
+    @Column(name = "position", nullable = false)
     private String position;
 
+    @OneToMany(mappedBy = "staff")
+    private List<Assignment> assignments;
+
     public void update(Staff staff) {
-        this.firstName = staff.firstName;
-        this.lastName = staff.lastName;
-        this.middleName = staff.middleName;
-        this.phone = staff.phone;
-        this.email = staff.email;
-        this.position = staff.position;
+        if (staff.firstName != null) this.firstName = staff.firstName;
+        if (staff.lastName != null) this.lastName = staff.lastName;
+        if (staff.middleName != null) this.middleName = staff.middleName;
+        if (staff.phone != null) this.phone = staff.phone;
+        if (staff.email != null) this.email = staff.email;
+        if (staff.position != null) this.position = staff.position;
     }
-
-
 }
+

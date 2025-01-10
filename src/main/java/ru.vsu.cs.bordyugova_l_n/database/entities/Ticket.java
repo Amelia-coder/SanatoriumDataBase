@@ -5,7 +5,7 @@ import lombok.*;
 
 
 @Entity
-@Table(name = "Ticket")
+@Table(name = "ticket")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -13,39 +13,41 @@ import lombok.*;
 public class Ticket {
 
     @Id
-    @Column(name = "ID")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "ClientID", nullable = false)
+    @JoinColumn(name = "clientid", nullable = false)
     private Client client;
 
     @ManyToOne
-    @JoinColumn(name = "RoomNumber", nullable = false)
+    @JoinColumn(name = "roomnumber", nullable = false)
     private Room room;
 
-    @Column(name = "AssignmentID")
-    private Integer assignmentId;
-
-    @Column(name = "Doctor")
+    @Column(name = "doctor")
     private String doctor;
 
-    @Column(name = "CheckInDate", nullable = false)
+    @Column(name = "assignmentid")
+    private Integer assignmentId;
+
     @Temporal(TemporalType.DATE)
+    @Column(name = "checkindate", nullable = false)
     private java.util.Date checkInDate;
 
-    @Column(name = "CheckOutDate", nullable = false)
     @Temporal(TemporalType.DATE)
+    @Column(name = "checkoutdate", nullable = false)
     private java.util.Date checkOutDate;
 
     public void update(Ticket ticket) {
-        this.client = ticket.client;
-        this.room = ticket.room;
-        this.assignmentId = ticket.assignmentId;
-        this.doctor = ticket.doctor;
-        this.checkInDate = ticket.checkInDate;
-        this.checkOutDate = ticket.checkOutDate;
+        if (ticket.client != null) this.client = ticket.client;
+        if (ticket.room != null) this.room = ticket.room;
+        if (ticket.doctor != null) this.doctor = ticket.doctor;
+        if (ticket.assignmentId != null) this.assignmentId = ticket.assignmentId;
+        if (ticket.checkInDate != null) this.checkInDate = ticket.checkInDate;
+        if (ticket.checkOutDate != null) this.checkOutDate = ticket.checkOutDate;
     }
-
 }
+
+
 

@@ -4,23 +4,25 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "Client")
+@Table(name = "client")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Client {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
-    @Column(name = "firstName", nullable = false)
+    @Column(name = "first_name", nullable = false)
     private String firstName;
 
-    @Column(name = "lastName", nullable = false)
+    @Column(name = "last_name", nullable = false)
     private String lastName;
 
-    @Column(name = "middleName")
+    @Column(name = "middle_name")
     private String middleName;
 
     @Column(name = "phone", unique = true)
@@ -29,19 +31,22 @@ public class Client {
     @Column(name = "email", unique = true)
     private String email;
 
-    @Column(name = "roomnumber")
-    private Integer roomNumber;
+    @ManyToOne
+    @JoinColumn(name = "roomnumber")
+    private Room room;
 
     @Column(name = "resortcard")
     private String resortCard;
 
     public void update(Client client) {
-        this.firstName = client.firstName;
-        this.lastName = client.lastName;
-        this.middleName = client.middleName;
-        this.phone = client.phone;
-        this.email = client.email;
-        this.roomNumber = client.roomNumber;
-        this.resortCard = client.resortCard;
+        if (client.firstName != null) this.firstName = client.firstName;
+        if (client.lastName != null) this.lastName = client.lastName;
+        if (client.middleName != null) this.middleName = client.middleName;
+        if (client.phone != null) this.phone = client.phone;
+        if (client.email != null) this.email = client.email;
+        if (client.room != null) this.room = client.room;
+        if (client.resortCard != null) this.resortCard = client.resortCard;
     }
 }
+
+

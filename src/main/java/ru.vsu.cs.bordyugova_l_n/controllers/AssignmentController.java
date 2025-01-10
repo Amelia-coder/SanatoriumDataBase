@@ -7,7 +7,7 @@ import ru.vsu.cs.bordyugova_l_n.services.AssignmentService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/assignments")
+@RequestMapping("/api/assignment")
 public class AssignmentController {
     private final AssignmentService service;
 

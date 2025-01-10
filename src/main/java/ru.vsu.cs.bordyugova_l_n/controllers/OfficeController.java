@@ -8,7 +8,7 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/api/offices")
+@RequestMapping("/api/office")
 public class OfficeController {
     private final OfficeService service;
 

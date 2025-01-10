@@ -7,7 +7,7 @@ import ru.vsu.cs.bordyugova_l_n.services.TicketService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/tickets")
+@RequestMapping("/api/ticket")
 public class TicketController {
     private final TicketService service;
 

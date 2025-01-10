@@ -10,7 +10,7 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/api/procedures")
+@RequestMapping("/api/procedure")
 public class ProcedureController {
     private final ProcedureService service;
 
