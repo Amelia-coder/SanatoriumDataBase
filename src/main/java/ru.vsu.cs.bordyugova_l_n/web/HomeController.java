@@ -8,6 +8,7 @@ public class HomeController {
 
     @GetMapping("/")
     public String home() {
-        return "redirect:/clients"; // Перенаправляет на страницу списка клиентов
+        return "redirect:/clients"; // Перенаправление на /clients
     }
 }
+
