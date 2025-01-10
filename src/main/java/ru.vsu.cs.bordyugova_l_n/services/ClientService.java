@@ -16,8 +16,11 @@ public class ClientService {
     }
 
     public List<Client> getAllClients() {
-        return repository.findAll();
+        List<Client> clients = repository.findAll();
+        clients.forEach(client -> System.out.println("Client ID: " + client.getId()));
+        return clients;
     }
+
 
     public Client getClientById(Long id) {
         return repository.findById(id).orElseThrow(() -> new InvalidDataException("Client not found with ID: " + id));
@@ -39,4 +42,5 @@ public class ClientService {
         }
         repository.deleteById(id);
     }
+
 }

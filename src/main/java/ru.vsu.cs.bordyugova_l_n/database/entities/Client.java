@@ -3,10 +3,10 @@ package ru.vsu.cs.bordyugova_l_n.database.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+
+@Data
 @Entity
 @Table(name = "client")
-@Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Client {
@@ -47,6 +47,69 @@ public class Client {
         if (client.room != null) this.room = client.room;
         if (client.resortCard != null) this.resortCard = client.resortCard;
     }
+
+//    public Long getId() {
+//        return id;
+//    }
+//
+//
+//    public String getResortCard() {
+//        return resortCard;
+//    }
+//
+//    public Room getRoom() {
+//        return room;
+//    }
+//
+//    public String getEmail() {
+//        return email;
+//    }
+//
+//    public String getPhone() {
+//        return phone;
+//    }
+//
+//    public String getMiddleName() {
+//        return middleName;
+//    }
+//
+//    public String getLastName() {
+//        return lastName;
+//    }
+//
+//    public String getFirstName() {
+//        return firstName;
+//    }
+//
+//    public void setId(Long id) {
+//        this.id = id;
+//    }
+//
+//    public void setFirstName(String firstName) {
+//        this.firstName = firstName;
+//    }
+//
+//    public void setLastName(String lastName) {
+//        this.lastName = lastName;
+//    }
+//
+//    public void setMiddleName(String middleName) {
+//        this.middleName = middleName;
+//    }
+//
+//    public void setPhone(String phone) {
+//        this.phone = phone;
+//    }
+//
+//    public void setEmail(String email) {
+//        this.email = email;
+//    }
+//
+//    public void setResortCard(String resortCard) {
+//        this.resortCard = resortCard;
+//    }
+//
+//    public void setRoom(Room room) {
+//        this.room = room;
+//    }
 }
-
-
