@@ -1,8 +1,10 @@
 package ru.vsu.cs.bordyugova_l_n.services;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.vsu.cs.bordyugova_l_n.database.entities.Staff;
-import ru.vsu.cs.bordyugova_l_n.database.repositories.InterfacesRepository.StaffRepository;
+import ru.vsu.cs.bordyugova_l_n.database.repositories.StaffRepository;
 import ru.vsu.cs.bordyugova_l_n.exceptions.InvalidDataException;
 
 import java.util.List;
@@ -38,6 +40,10 @@ public class StaffService {
             throw new InvalidDataException("Staff not found with ID: " + id);
         }
         repository.deleteById(id);
+    }
+
+    public Page<Staff> getStaffs(Pageable pageable) {
+        return repository.findAll(pageable);
     }
 }
 

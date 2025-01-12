@@ -1,5 +1,7 @@
 package ru.vsu.cs.bordyugova_l_n.controllers;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 import ru.vsu.cs.bordyugova_l_n.database.entities.Client;
 import ru.vsu.cs.bordyugova_l_n.services.ClientService;
@@ -40,4 +42,7 @@ public class ClientController {
     public void deleteClient(@PathVariable Integer id) {
         service.deleteClient(Long.valueOf(id));
     }
+
+
+
 }

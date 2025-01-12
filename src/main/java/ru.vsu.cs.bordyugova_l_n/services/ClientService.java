@@ -1,8 +1,9 @@
 package ru.vsu.cs.bordyugova_l_n.services;
 
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import ru.vsu.cs.bordyugova_l_n.database.entities.Client;
-import ru.vsu.cs.bordyugova_l_n.database.repositories.InterfacesRepository.ClientRepository;
+import ru.vsu.cs.bordyugova_l_n.database.repositories.ClientRepository;
 import ru.vsu.cs.bordyugova_l_n.exceptions.InvalidDataException;
 
 import java.util.List;
@@ -42,5 +43,10 @@ public class ClientService {
         }
         repository.deleteById(id);
     }
+
+    public Page<Client> getClients(Pageable pageable) {
+        return repository.findAll(pageable);
+    }
+
 
 }

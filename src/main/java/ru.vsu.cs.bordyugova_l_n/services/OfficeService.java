@@ -1,8 +1,10 @@
 package ru.vsu.cs.bordyugova_l_n.services;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.vsu.cs.bordyugova_l_n.database.entities.Office;
-import ru.vsu.cs.bordyugova_l_n.database.repositories.InterfacesRepository.OfficeRepository;
+import ru.vsu.cs.bordyugova_l_n.database.repositories.OfficeRepository;
 import ru.vsu.cs.bordyugova_l_n.exceptions.InvalidDataException;
 
 import java.util.List;
@@ -38,5 +40,9 @@ public class OfficeService {
             throw new InvalidDataException("Office not found with ID: " + id);
         }
         repository.deleteById(id);
+    }
+
+    public Page<Office> getOffices(Pageable pageable) {
+        return repository.findAll(pageable);
     }
 }
