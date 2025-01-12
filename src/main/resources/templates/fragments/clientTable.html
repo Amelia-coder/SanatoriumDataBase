@@ -14,17 +14,10 @@
 
 
 <!-- Пагинация -->
-<nav>
-    <ul class="pagination">
-        <li th:classappend="${clientsPage.first} ? 'disabled'">
-            <a href="#" onclick="changePage(${clientsPage.number - 1})">Previous</a>
-        </li>
-        <li th:each="i : ${#numbers.sequence(0, clientsPage.totalPages - 1)}"
-            th:classappend="${i} == ${clientsPage.number} ? 'active'">
-            <a href="#" onclick="changePage([[${i}]])" th:text="${i + 1}"></a>
-        </li>
-        <li th:classappend="${clientsPage.last} ? 'disabled'">
-            <a href="#" onclick="changePage(${clientsPage.number + 1})">Next</a>
-        </li>
-    </ul>
+<nav class="d-flex align-items-center">
+    <button class="btn btn-secondary me-2" id="prevPageBtn">Previous</button>
+
+    <select id="pageSelect" class="form-select w-auto me-2"></select>
+
+    <button class="btn btn-secondary" id="nextPageBtn">Next</button>
 </nav>
