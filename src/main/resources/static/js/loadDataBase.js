@@ -1,6 +1,7 @@
 let currentPage = 0;
 let currentSize = 10;
 let currentTable = 'clients';
+let totalElements = 0;
 
 document.addEventListener('DOMContentLoaded', function () {
     loadData(currentTable, currentPage, currentSize);
@@ -14,7 +15,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     document.getElementById('itemsPerPage').addEventListener('change', function () {
-        currentSize = this.value;
+        currentSize = parseInt(this.value);
         const totalPages = Math.ceil(totalElements / currentSize);
         if (currentPage >= totalPages) {
             currentPage = totalPages - 1;
@@ -32,6 +33,7 @@ function loadData(table, page = 0, size = 10) {
             return response.json();
         })
         .then(data => {
+            totalElements = data.totalElements;
             document.getElementById('tableContent').innerHTML = data.contentHtml;
             renderPagination(data);
         })
