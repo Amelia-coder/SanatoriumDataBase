@@ -6,7 +6,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import ru.vsu.cs.bordyugova_l_n.database.entities.Client;
 
+import java.util.List;
+
 @Repository
 public interface ClientRepository extends JpaRepository<Client, Long> {
     Page<Client> findAll(Pageable pageable);
+    List<Client> findByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCase(String firstName, String lastName);
+
 }

@@ -9,6 +9,7 @@ import ru.vsu.cs.bordyugova_l_n.database.entities.Client;
 import ru.vsu.cs.bordyugova_l_n.services.ClientService;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -61,6 +62,19 @@ public class WebController {
                     .append("</tr>");
         }
         return sb.toString();
+    }
+
+    @GetMapping("/database/clients/search")
+    @ResponseBody
+    public List<Map<String, Object>> searchClients(@RequestParam String query) {
+        List<Client> clients = clientService.searchClients(query);
+        return clients.stream().map(client -> {
+            Map<String, Object> map = new HashMap<>();
+            map.put("id", client.getId());
+            map.put("firstName", client.getFirstName());
+            map.put("lastName", client.getLastName());
+            return map;
+        }).toList();
     }
 
 }
