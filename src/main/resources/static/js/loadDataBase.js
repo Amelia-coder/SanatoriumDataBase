@@ -71,8 +71,16 @@ function searchClients(query) {
 
 function generateSearchResultsHtml(data) {
     return data.length > 0
-        ? `<ul>${data.map(client => `<li>${client.firstName} ${client.lastName} (ID: ${client.id})</li>`).join('')}</ul>`
-        : '<p>Ничего не найдено</p>';
+        ? data.map(client => `<tr>
+                                <td>${client.id}</td>
+                                <td>${client.firstName}</td>
+                                <td>${client.lastName}</td>
+                                <td>
+                                    <button class='btn btn-warning btn-sm' onclick='editClient(${client.id})'>Edit</button>
+                                    <button class='btn btn-danger btn-sm' onclick='deleteClient(${client.id})'>Delete</button>
+                                </td>
+                              </tr>`).join('')
+        : '<tr><td colspan="4">Ничего не найдено</td></tr>';
 }
 
 function changePage(page) {
@@ -100,6 +108,24 @@ function renderPagination(data) {
         pagination.innerHTML += `<li class="page-item">
                                    <a class="page-link" href="#" onclick="changePage(${data.number + 1})">Next</a>
                                  </li>`;
+    }
+}
+
+function editClient(id) {
+    console.log(`Edit client with ID: ${id}`);
+    // Логика для редактирования клиента
+}
+
+function deleteClient(id) {
+    if (confirm('Вы уверены, что хотите удалить этого клиента?')) {
+        fetch(`/database/clients/${id}`, { method: 'DELETE' })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Ошибка удаления клиента');
+                }
+                loadData(currentTable, currentPage, currentSize, currentSearchQuery);
+            })
+            .catch(error => console.error('Ошибка удаления:', error));
     }
 }
 
