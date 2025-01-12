@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.vsu.cs.bordyugova_l_n.database.entities.Client;
 import ru.vsu.cs.bordyugova_l_n.services.ClientService;
+import ru.vsu.cs.bordyugova_l_n.services.RoomService;
 
 import java.util.HashMap;
 import java.util.List;
@@ -16,9 +17,11 @@ import java.util.Map;
 @RequestMapping("/")
 public class WebController {
     private final ClientService clientService;
+    private final RoomService roomService;
 
-    public WebController(ClientService clientService) {
+    public WebController(ClientService clientService, RoomService roomService) {
         this.clientService = clientService;
+        this.roomService = roomService;
     }
 
     @GetMapping("/")
@@ -31,21 +34,30 @@ public class WebController {
         return "database";
     }
 
-    @GetMapping("/database/clients")
+    @GetMapping("/database/{table}")
     @ResponseBody
-    public Map<String, Object> getClientsPage(@RequestParam(defaultValue = "0") int page,
+    public Map<String, Object> getTablePage(@PathVariable String table,
+                                            @RequestParam(defaultValue = "0") int page,
                                               @RequestParam(defaultValue = "10") int size) {
-        Page<Client> clientsPage = clientService.getClients(PageRequest.of(page, size));
 
-        String contentHtml = generateClientRowsHtml(clientsPage);
-        Map<String, Object> response = new HashMap<>();
-        response.put("contentHtml", contentHtml);
-        response.put("number", clientsPage.getNumber());
-        response.put("totalPages", clientsPage.getTotalPages());
-        response.put("first", clientsPage.isFirst());
-        response.put("last", clientsPage.isLast());
+//        PageRequest pageRequest = PageRequest.of(page, size);
 
-        return response;
+        switch (table.toLowerCase()) {
+            case "clients":
+                Page<Client> clientsPage = clientService.getClients(PageRequest.of(page, size));
+                String contentHtml = generateClientRowsHtml(clientsPage);
+                Map<String, Object> response = new HashMap<>();
+                response.put("contentHtml", contentHtml);
+                response.put("number", clientsPage.getNumber());
+                response.put("totalPages", clientsPage.getTotalPages());
+                response.put("first", clientsPage.isFirst());
+                response.put("last", clientsPage.isLast());
+                return response;
+            case "rooms":
+        }
+
+
+        return null;
     }
 
     private String generateClientRowsHtml(Page<Client> clientsPage) {
