@@ -123,8 +123,8 @@ public class WebController {
                     .append("<td>").append(client.getPhone() != null ? client.getPhone() : "").append("</td>")
                     .append("<td>").append(client.getResortCard() != null ? client.getResortCard() : "").append("</td>")
                     .append("<td>")
-                    .append("<button class='btn btn-warning btn-sm'>Edit</button>")
-                    .append("<button class='btn btn-danger btn-sm'>Delete</button>")
+                    .append("<button class='btn btn-warning btn-sm' data-id='"+ client.getId() + "'>Edit</button>")
+                    .append("<button class='btn btn-danger btn-sm' data-id='" + client.getId() + "'>Delete</button>")
                     .append("</td>")
                     .append("</tr>");
         }
@@ -176,8 +176,8 @@ public class WebController {
                     .append("<td>").append(office.getBuilding()).append("</td>")
                     .append("<td>").append(office.getFloor()).append("</td>")
                     .append("<td>")
-                    .append("<button class='btn btn-warning btn-sm'>Edit</button>")
-                    .append("<button class='btn btn-danger btn-sm'>Delete</button>")
+                    .append("<button class='btn btn-warning btn-sm' >Edit</button>")
+                    .append("<button class='btn btn-danger btn-sm' >Delete</button>")
                     .append("</td>")
                     .append("</tr>");
         }
