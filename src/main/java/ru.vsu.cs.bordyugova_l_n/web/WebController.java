@@ -13,6 +13,7 @@ import ru.vsu.cs.bordyugova_l_n.services.RoomService;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 
 @Controller
 @RequestMapping("/")
@@ -39,37 +40,41 @@ public class WebController {
     @ResponseBody
     public Map<String, Object> getTablePage(@PathVariable String table,
                                             @RequestParam(defaultValue = "0") int page,
-                                            @RequestParam(defaultValue = "10") int size) {
+                                            @RequestParam(defaultValue = "10") int size,
+                                            @RequestParam(defaultValue = "") String search) {
 
 //        PageRequest pageRequest = PageRequest.of(page, size);
 
         switch (table.toLowerCase()) {
             case "clients": {
-                Page<Client> clientsPage = clientService.getClients(PageRequest.of(page, size));
-                String contentHtmlClient = generateClientRowsHtml(clientsPage);
-                Map<String, Object> response = new HashMap<>();
-                response.put("contentHtml", contentHtmlClient);
-                response.put("number", clientsPage.getNumber());
-                response.put("totalPages", clientsPage.getTotalPages());
-                response.put("first", clientsPage.isFirst());
-                response.put("last", clientsPage.isLast());
-                return response;
+                Page<Client> clientsPage = search.isEmpty()
+                        ? clientService.getClients(PageRequest.of(page, size))
+                        : clientService.searchClients(search, PageRequest.of(page, size));
+
+                return generateResponse(clientsPage, this::generateClientRowsHtml);
             }
             case "rooms": {
-                Page<Room> roomsPage = roomService.getRooms(PageRequest.of(page, size));
-                String contentHtml = generateRoomRowsHtml(roomsPage);
-                Map<String, Object> response = new HashMap<>();
-                response.put("contentHtml", contentHtml);
-                response.put("number", roomsPage.getNumber());
-                response.put("totalPages", roomsPage.getTotalPages());
-                response.put("first", roomsPage.isFirst());
-                response.put("last", roomsPage.isLast());
-                return response;
+                Page<Room> roomsPage = search.isEmpty()
+                        ? roomService.getRooms(PageRequest.of(page, size))
+                        : roomService.searchRooms(search, PageRequest.of(page, size));
+
+                return generateResponse(roomsPage, this::generateRoomRowsHtml);
             }
+            default:
+                throw new IllegalArgumentException("Unknown table: " + table);
         }
 
+    }
 
-        return null;
+
+    private <T> Map<String, Object> generateResponse(Page<T> page, Function<Page<T>, String> htmlGenerator) {
+        Map<String, Object> response = new HashMap<>();
+        response.put("contentHtml", htmlGenerator.apply(page));
+        response.put("number", page.getNumber());
+        response.put("totalPages", page.getTotalPages());
+        response.put("first", page.isFirst());
+        response.put("last", page.isLast());
+        return response;
     }
 
     private String generateClientRowsHtml(Page<Client> tablePage) {
@@ -105,17 +110,19 @@ public class WebController {
     }
 
 
-    @GetMapping("/database/clients/search")
-    @ResponseBody
-    public List<Map<String, Object>> searchClients(@RequestParam String query) {
-        List<Client> clients = clientService.searchClients(query);
-        return clients.stream().map(client -> {
-            Map<String, Object> map = new HashMap<>();
-            map.put("id", client.getId());
-            map.put("firstName", client.getFirstName());
-            map.put("lastName", client.getLastName());
-            return map;
-        }).toList();
-    }
+
+//
+//    @GetMapping("/database/clients/search")
+//    @ResponseBody
+//    public List<Map<String, Object>> searchClients(@RequestParam String query) {
+//        List<Client> clients = clientService.searchClients(query);
+//        return clients.stream().map(client -> {
+//            Map<String, Object> map = new HashMap<>();
+//            map.put("id", client.getId());
+//            map.put("firstName", client.getFirstName());
+//            map.put("lastName", client.getLastName());
+//            return map;
+//        }).toList();
+//    }
 
 }

@@ -48,8 +48,8 @@ public class ClientService {
         return repository.findAll(pageable);
     }
 
-    public List<Client> searchClients(String query) {
-        return repository.findByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCase(query, query);
+    public Page<Client> searchClients(String query, PageRequest pageRequest) {
+        return repository.findByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCase(query, query, pageRequest);
     }
 
 

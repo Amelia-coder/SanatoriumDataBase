@@ -1,6 +1,7 @@
 package ru.vsu.cs.bordyugova_l_n.services;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.vsu.cs.bordyugova_l_n.database.entities.Room;
@@ -44,6 +45,10 @@ public class RoomService {
 
     public Page<Room> getRooms (Pageable pageable) {
         return repository.findAll(pageable);
+    }
+
+    public Page<Room> searchRooms(String query, PageRequest pageRequest) {
+        return repository.findByNumberContainingIgnoreCase(query, pageRequest);
     }
 }
 
