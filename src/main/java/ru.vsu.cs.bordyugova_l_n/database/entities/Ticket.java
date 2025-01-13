@@ -25,8 +25,9 @@ public class Ticket {
     @JoinColumn(name = "roomnumber", nullable = false)
     private Room room;
 
-    @Column(name = "doctor")
-    private String doctor;
+    @ManyToOne
+    @JoinColumn(name = "doctorid", nullable = false)
+    private Staff doctor;
 
     @Column(name = "assignmentid")
     private Integer assignmentId;

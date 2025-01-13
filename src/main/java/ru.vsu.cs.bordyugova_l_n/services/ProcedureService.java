@@ -22,7 +22,7 @@ public class ProcedureService {
     }
 
     public Procedure getProcedureById(Integer id) {
-        return repository.findById(id).orElseThrow(() -> new InvalidDataException("Procedure not found with ID: " + id));
+        return repository.findById(Long.valueOf(id)).orElseThrow(() -> new InvalidDataException("Procedure not found with ID: " + id));
     }
 
     public void addProcedure(Procedure procedure) {
@@ -36,10 +36,14 @@ public class ProcedureService {
     }
 
     public void deleteProcedure(Integer id) {
-        if (!repository.existsById(id)) {
+        if (!repository.existsById(Long.valueOf(id))) {
             throw new InvalidDataException("Procedure not found with ID: " + id);
         }
-        repository.deleteById(id);
+        repository.deleteById(Long.valueOf(id));
+    }
+
+    public Page<Procedure> searchProcedures(String keyword, Pageable pageable) {
+        return repository.findByNameContainingIgnoreCaseOrDescriptionContainingIgnoreCase(keyword, keyword, pageable);
     }
 
     public Page<Procedure> getProcedures(Pageable pageable) {

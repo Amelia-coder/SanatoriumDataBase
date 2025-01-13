@@ -1,0 +1,27 @@
+<tbody th:fragment="ticketsRows">
+<tr th:each="ticket : ${ticketsPage.content}">
+    <td th:text="${ticket.clientId}">Client ID</td>
+    <td th:text="${ticket.roomNumber}">Room Number</td>
+    <td th:text="${ticket.doctorId}">Doctor ID</td>
+    <td th:text="${ticket.assignmentId}">Assignment ID</td>
+    <td th:text="${#dates.format(ticket.checkInDate, 'yyyy-MM-dd')}">Date In</td>
+    <td th:text="${#dates.format(ticket.checkOutDate, 'yyyy-MM-dd')}">Date Out</td>
+    <td>
+        <button
+                class="btn btn-warning btn-sm"
+                onclick="editRecord('${table}', ${ticket.id})">Edit</button>
+        <button
+                class="btn btn-danger btn-sm"
+                onclick="deleteRecord('${table}', ${ticket.id})">Delete</button>
+    </td>
+</tr>
+</tbody>
+
+<!-- Пагинация -->
+<nav class="d-flex align-items-center">
+    <button class="btn btn-secondary me-2" id="prevPageBtn" onclick="navigatePage(-1)">Previous</button>
+
+    <select id="pageSelect" class="form-select w-auto me-2" onchange="changePage(this.value)"></select>
+
+    <button class="btn btn-secondary" id="nextPageBtn" onclick="navigatePage(1)">Next</button>
+</nav>

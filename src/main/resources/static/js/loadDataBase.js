@@ -46,6 +46,17 @@ document.addEventListener('DOMContentLoaded', function () {
             loadData(currentTable, currentPage, currentSize, currentSearchQuery);
         });
     });
+
+    document.querySelectorAll('.column-toggle input[type="checkbox"]').forEach(checkbox => {
+        checkbox.addEventListener('change', function () {
+            const columnClass = this.value;
+            const isVisible = this.checked;
+            document.querySelectorAll(`.${columnClass}`).forEach(cell => {
+                cell.style.display = isVisible ? '' : 'none';
+            });
+        });
+    });
+
 });
 
 
@@ -147,24 +158,39 @@ function generateSearchResultsHtml(data) {
         : '<tr><td colspan="4">Ничего не найдено</td></tr>';
 }
 
-// // Функции редактирования и удаления
-// function editItem(id) {
-//     console.log(Edit item with ID: ${id});
-//     // Логика редактирования
-// }
+function editTicket(id) {
+    const newData = {
+        // Получите данные из модального окна или формы
+        clientId: document.getElementById("clientIdInput").value,
+        roomId: document.getElementById("roomIdInput").value,
+        doctorId: document.getElementById("doctorIdInput").value,
+        checkInDate: document.getElementById("checkInDateInput").value,
+        checkOutDate: document.getElementById("checkOutDateInput").value,
+    };
 
-// function deleteItem(id) {
-//     if (confirm('Вы уверены, что хотите удалить этот элемент?')) {
-//         fetch(/database/${currentTable}/${id}, { method: 'DELETE' })
-//             .then(response => {
-//                 if (!response.ok) {
-//                     throw new Error('Ошибка удаления элемента');
-//                 }
-//                 loadData(currentTable, currentPage, currentSize, currentSearchQuery);
-//             })
-//             .catch(error => console.error('Ошибка удаления:', error));
-//     }
-// }
+    fetch(`/database/tickets/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newData)
+    })
+        .then(response => {
+            if (!response.ok) throw new Error('Ошибка при редактировании');
+            loadData(currentTable, currentPage, currentSize, currentSearchQuery);
+        })
+        .catch(error => console.error('Ошибка:', error));
+}
+
+function deleteTicket(id) {
+    if (confirm("Вы уверены, что хотите удалить запись?")) {
+        fetch(`/database/tickets/${id}`, { method: 'DELETE' })
+            .then(response => {
+                if (!response.ok) throw new Error('Ошибка при удалении');
+                loadData(currentTable, currentPage, currentSize, currentSearchQuery);
+            })
+            .catch(error => console.error('Ошибка:', error));
+    }
+}
+
 
 // Функция изменения страницы
 function changePage(page) {

@@ -55,11 +55,27 @@
                     role="tab" aria-controls="ticket" aria-selected="false" data-table="tickets">Tickets
             </button>
         </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="office-tab" data-bs-toggle="tab" data-bs-target="#office" type="button" role="tab"
+                    aria-controls="office" aria-selected="false" data-table="offices">Offices
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="staff-tab" data-bs-toggle="tab" data-bs-target="#staff" type="button"
+                    role="tab" aria-controls="staff" aria-selected="true" data-table="staffs">Staffs
+            </button>
+        </li><li class="nav-item" role="presentation">
+
+            <button class="nav-link" id="procedure-tab" data-bs-toggle="tab" data-bs-target="#procedure" type="button"
+                    role="tab" aria-controls="procedure" aria-selected="true" data-table="procedures">Procedures
+            </button>
+        </li>
     </ul>
 
     <!-- Tab Content -->
-    <div class="tab-content mt-3" id="myTabContent" >
-        <div class="tab-pane fade show active" id="client" role="tabpanel" aria-labelledby="client-tab" data-table="value">
+    <div class="tab-content mt-3" id="myTabContent">
+        <div class="tab-pane fade show active" id="client" role="tabpanel" aria-labelledby="client-tab"
+             data-table="value">
             <h3>Clients</h3>
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <div>
@@ -72,7 +88,8 @@
                     </select>
                 </div>
                 <div>
-                    <input type="text" id="clientsSearchInput" class="form-control d-inline w-auto" placeholder="Search...">
+                    <input type="text" id="clientsSearchInput" class="form-control d-inline w-auto"
+                           placeholder="Search...">
                     <button id="clientsSearchButton" class="btn btn-primary ms-2">Search</button>
                     <button class="btn btn-primary ms-2">Filter</button>
                 </div>
@@ -80,11 +97,15 @@
             <table class="table table-striped">
                 <thead>
                 <tr>
-                    <th>ID</th>
+                    <!--                    <th>ID</th>-->
                     <th>First Name</th>
                     <th>Last Name</th>
+                    <th>Middle Name</th>
+                    <th>Phone</th>
+                    <th>Resort Card</th>
                     <th>Actions</th>
                 </tr>
+
                 </thead>
                 <tbody id="clientsTableContent">
                 <!-- Данные будут подгружаться сюда -->
@@ -94,9 +115,6 @@
             <nav>
                 <ul class="pagination" id="clientsPagination"></ul>
             </nav>
-
-
-
         </div>
 
         <div class="tab-pane fade" id="room" role="tabpanel" aria-labelledby="room-tab" data-table="value">
@@ -112,7 +130,8 @@
                     </select>
                 </div>
                 <div>
-                    <input type="text" id="roomsSearchInput" class="form-control d-inline w-auto" placeholder="Search...">
+                    <input type="text" id="roomsSearchInput" class="form-control d-inline w-auto"
+                           placeholder="Search...">
                     <button id="roomsSearchButton" class="btn btn-primary ms-2">Search</button>
                     <button class="btn btn-primary ms-2">Filter</button>
                 </div>
@@ -137,47 +156,168 @@
         </div>
 
 
+        <div class="tab-pane fade" id="ticket" role="tabpanel" aria-labelledby="ticket-tab" data-table="value">
+            <h3>Tickets</h3>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <div>
+                    <label for="itemsPerPageTickets" class="form-label me-2">Показать:</label>
+                    <select id="itemsPerPageTickets" class="form-select d-inline w-auto">
+                        <option value="5">5</option>
+                        <option value="10" selected>10</option>
+                        <option value="20">20</option>
+                        <option value="50">50</option>
+                    </select>
+                </div>
+                <div>
+                    <input type="text" id="ticketsSearchInput" class="form-control d-inline w-auto"
+                           placeholder="Search...">
+                    <button id="ticketsSearchButton" class="btn btn-primary ms-2">Search</button>
+                    <button class="btn btn-primary ms-2">Filter</button>
+                </div>
+            </div>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Client Id</th>
+                    <th>Room Number</th>
+                    <th>Doctor Id</th>
+                    <th>Assignment Id</th>
+                    <th>Date In</th>
+                    <th>Date out</th>
+                </tr>
+                </thead>
+                <tbody id="ticketsTableContent">
+                <!-- Данные будут подгружаться сюда -->
+                </tbody>
+            </table>
 
-<!--        <div class="tab-pane fade" id="room" role="tabpanel" aria-labelledby="room-tab">-->
-<!--            <h3>Tickets</h3>-->
-<!--            <div class="d-flex justify-content-between align-items-center mb-3">-->
-<!--                <div>-->
-<!--                    <label for="itemsPerPage" class="form-label me-2">Показать:</label>-->
-<!--                    <select id="itemsPerPage" class="form-select d-inline w-auto">-->
-<!--                        <option value="5">5</option>-->
-<!--                        <option value="10" selected>10</option>-->
-<!--                        <option value="20">20</option>-->
-<!--                        <option value="50">50</option>-->
-<!--                    </select>-->
-<!--                </div>-->
-<!--                <div>-->
-<!--                    <input type="text" id="searchInput" class="form-control d-inline w-auto" placeholder="Search...">-->
-<!--                    <button id="searchButton" class="btn btn-primary ms-2">Search</button>-->
-<!--                    <button class="btn btn-primary ms-2">Filter</button>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <table class="table table-striped">-->
-<!--                <thead>-->
-<!--                <tr>-->
-<!--                    <th>ID</th>-->
-<!--                    <th>First Name</th>-->
-<!--                    <th>Last Name</th>-->
-<!--                    <th>Actions</th>-->
-<!--                </tr>-->
-<!--                </thead>-->
-<!--                <tbody id="tableContent">-->
-<!--                &lt;!&ndash; Данные будут подгружаться сюда &ndash;&gt;-->
-<!--                </tbody>-->
-<!--            </table>-->
-
-<!--            <nav>-->
-<!--                <ul class="pagination" id="ticketspagination"></ul>-->
-<!--            </nav>-->
-
-
-
+            <nav>
+                <ul class="pagination" id="ticketsPagination"></ul>
+            </nav>
         </div>
-    </div>
+
+        <div class="tab-pane fade" id="office" role="tabpanel" aria-labelledby="office-tab" data-table="value">
+            <h3>Offices</h3>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <div>
+                    <label for="itemsPerPageOffices" class="form-label me-2">Показать:</label>
+                    <select id="itemsPerPageOffices" class="form-select d-inline w-auto">
+                        <option value="5">5</option>
+                        <option value="10" selected>10</option>
+                        <option value="20">20</option>
+                        <option value="50">50</option>
+                    </select>
+                </div>
+                <div>
+                    <input type="text" id="officesSearchInput" class="form-control d-inline w-auto"
+                           placeholder="Search...">
+                    <button id="officesSearchButton" class="btn btn-primary ms-2">Search</button>
+                    <button class="btn btn-primary ms-2">Filter</button>
+                </div>
+            </div>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Number</th>
+                    <th>Building</th>
+                    <th>Floor</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody id="officesTableContent">
+                <!-- Данные будут подгружаться сюда -->
+                </tbody>
+            </table>
+
+            <nav>
+                <ul class="pagination" id="officesPagination"></ul>
+            </nav>
+        </div>
+
+        <div class="tab-pane fade show active" id="staff" role="tabpanel" aria-labelledby="staff-tab"
+             data-table="value">
+            <h3>Staffs</h3>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <div>
+                    <label for="itemsPerPageStaffs" class="form-label me-2">Показать:</label>
+                    <select id="itemsPerPageStaffs" class="form-select d-inline w-auto">
+                        <option value="5">5</option>
+                        <option value="10" selected>10</option>
+                        <option value="20">20</option>
+                        <option value="50">50</option>
+                    </select>
+                </div>
+                <div>
+                    <input type="text" id="staffsSearchInput" class="form-control d-inline w-auto"
+                           placeholder="Search...">
+                    <button id="staffsSearchButton" class="btn btn-primary ms-2">Search</button>
+                    <button class="btn btn-primary ms-2">Filter</button>
+                </div>
+            </div>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <!--                    <th>ID</th>-->
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Middle Name</th>
+                    <th>Phone</th>
+                    <th>Actions</th>
+                </tr>
+
+                </thead>
+                <tbody id="staffsTableContent">
+                <!-- Данные будут подгружаться сюда -->
+                </tbody>
+            </table>
+
+            <nav>
+                <ul class="pagination" id="staffsPagination"></ul>
+            </nav>
+        </div>
+
+        <div class="tab-pane fade show active" id="procedure" role="tabpanel" aria-labelledby="procedure-tab"
+             data-table="value">
+            <h3>Procedures</h3>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <div>
+                    <label for="itemsPerPageProcedures" class="form-label me-2">Показать:</label>
+                    <select id="itemsPerPageProcedures" class="form-select d-inline w-auto">
+                        <option value="5">5</option>
+                        <option value="10" selected>10</option>
+                        <option value="20">20</option>
+                        <option value="50">50</option>
+                    </select>
+                </div>
+                <div>
+                    <input type="text" id="proceduresSearchInput" class="form-control d-inline w-auto"
+                           placeholder="Search...">
+                    <button id="proceduresSearchButton" class="btn btn-primary ms-2">Search</button>
+                    <button class="btn btn-primary ms-2">Filter</button>
+                </div>
+            </div>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <!--                    <th>ID</th>-->
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Actions</th>
+                </tr>
+
+                </thead>
+                <tbody id="proceduresTableContent">
+                <!-- Данные будут подгружаться сюда -->
+                </tbody>
+            </table>
+
+            <nav>
+                <ul class="pagination" id="proceduresPagination"></ul>
+            </nav>
+        </div>
+
+
     </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>

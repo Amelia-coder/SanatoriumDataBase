@@ -1,3 +1,4 @@
+// Modified WebController class to ensure proper ticket display including client, doctor, and room information
 package ru.vsu.cs.bordyugova_l_n.web;
 
 import org.springframework.data.domain.Page;
@@ -6,12 +7,19 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.vsu.cs.bordyugova_l_n.database.entities.Client;
+import ru.vsu.cs.bordyugova_l_n.database.entities.Office;
+import ru.vsu.cs.bordyugova_l_n.database.entities.Procedure;
 import ru.vsu.cs.bordyugova_l_n.database.entities.Room;
+import ru.vsu.cs.bordyugova_l_n.database.entities.Staff;
+import ru.vsu.cs.bordyugova_l_n.database.entities.Ticket;
 import ru.vsu.cs.bordyugova_l_n.services.ClientService;
+import ru.vsu.cs.bordyugova_l_n.services.OfficeService;
+import ru.vsu.cs.bordyugova_l_n.services.ProcedureService;
 import ru.vsu.cs.bordyugova_l_n.services.RoomService;
+import ru.vsu.cs.bordyugova_l_n.services.StaffService;
+import ru.vsu.cs.bordyugova_l_n.services.TicketService;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -20,10 +28,18 @@ import java.util.function.Function;
 public class WebController {
     private final ClientService clientService;
     private final RoomService roomService;
+    private final TicketService ticketService;
+    private final OfficeService officeService;
+    private final StaffService staffService;
+    private final ProcedureService procedureService;
 
-    public WebController(ClientService clientService, RoomService roomService) {
+    public WebController(ClientService clientService, RoomService roomService, TicketService ticketService, OfficeService officeService, StaffService staffService, ProcedureService procedureService) {
         this.clientService = clientService;
         this.roomService = roomService;
+        this.ticketService = ticketService;
+        this.officeService = officeService;
+        this.staffService = staffService;
+        this.procedureService = procedureService;
     }
 
     @GetMapping("/")
@@ -43,8 +59,6 @@ public class WebController {
                                             @RequestParam(defaultValue = "10") int size,
                                             @RequestParam(defaultValue = "") String search) {
 
-//        PageRequest pageRequest = PageRequest.of(page, size);
-
         switch (table.toLowerCase()) {
             case "clients": {
                 Page<Client> clientsPage = search.isEmpty()
@@ -60,12 +74,34 @@ public class WebController {
 
                 return generateResponse(roomsPage, this::generateRoomRowsHtml);
             }
+            case "tickets": {
+                Page<Ticket> ticketsPage = search.isEmpty()
+                        ? ticketService.getTickets(PageRequest.of(page, size))
+                        : ticketService.searchTickets(search, PageRequest.of(page, size));
+                return generateResponse(ticketsPage, this::generateTicketRowsHtml);
+            }
+            case "offices": {
+                Page<Office> officesPage = search.isEmpty()
+                        ? officeService.getOffices(PageRequest.of(page, size))
+                        : officeService.searchRooms(search, PageRequest.of(page, size));
+
+                return generateResponse(officesPage, this::generateOfficeRowsHtml);
+            }
+            case "staff": {
+                Page<Staff> staffsPage = search.isEmpty()
+                        ? staffService.getStaffs(PageRequest.of(page, size))
+                        : staffService.searchStaffs(search, PageRequest.of(page, size));
+
+                return generateResponse(staffsPage, this::generateStaffRowsHtml);
+            }
+            case "procedures":
+                Page<Procedure> proceduresPage = procedureService.getProcedures(PageRequest.of(page, size));
+                return generateResponse(proceduresPage, this::generateProcedureRowsHtml);
+
             default:
                 throw new IllegalArgumentException("Unknown table: " + table);
         }
-
     }
-
 
     private <T> Map<String, Object> generateResponse(Page<T> page, Function<Page<T>, String> htmlGenerator) {
         Map<String, Object> response = new HashMap<>();
@@ -81,9 +117,11 @@ public class WebController {
         StringBuilder sb = new StringBuilder();
         for (Client client : tablePage.getContent()) {
             sb.append("<tr>")
-                    .append("<td>").append(client.getId()).append("</td>")
                     .append("<td>").append(client.getFirstName()).append("</td>")
                     .append("<td>").append(client.getLastName()).append("</td>")
+                    .append("<td>").append(client.getMiddleName() != null ? client.getMiddleName() : "").append("</td>")
+                    .append("<td>").append(client.getPhone() != null ? client.getPhone() : "").append("</td>")
+                    .append("<td>").append(client.getResortCard() != null ? client.getResortCard() : "").append("</td>")
                     .append("<td>")
                     .append("<button class='btn btn-warning btn-sm'>Edit</button>")
                     .append("<button class='btn btn-danger btn-sm'>Delete</button>")
@@ -109,20 +147,75 @@ public class WebController {
         return sb.toString();
     }
 
+    private String generateTicketRowsHtml(Page<Ticket> tablePage) {
+        StringBuilder sb = new StringBuilder();
+        for (Ticket ticket : tablePage.getContent()) {
+            sb.append("<tr>")
+                    .append("<td>").append(ticket.getClient().getFirstName()).append(" ")
+                    .append(ticket.getClient().getLastName()).append("</td>")
+                    .append("<td>").append(ticket.getRoom().getNumber()).append("</td>")
+                    .append("<td>").append(ticket.getDoctor().getFirstName()).append(" ")
+                    .append(ticket.getDoctor().getLastName()).append("</td>")
+                    .append("<td>").append(ticket.getAssignmentId()).append("</td>")
+                    .append("<td>").append(ticket.getCheckInDate()).append("</td>")
+                    .append("<td>").append(ticket.getCheckOutDate()).append("</td>")
+                    .append("<td>")
+                    .append("<button class='btn btn-warning btn-sm'>Edit</button>")
+                    .append("<button class='btn btn-danger btn-sm'>Delete</button>")
+                    .append("</td>")
+                    .append("</tr>");
+        }
+        return sb.toString();
+    }
 
+    private String generateOfficeRowsHtml(Page<Office> tablePage) {
+        StringBuilder sb = new StringBuilder();
+        for (Office office: tablePage.getContent()) {
+            sb.append("<tr>")
+                    .append("<td>").append(office.getNumber()).append("</td>")
+                    .append("<td>").append(office.getBuilding()).append("</td>")
+                    .append("<td>").append(office.getFloor()).append("</td>")
+                    .append("<td>")
+                    .append("<button class='btn btn-warning btn-sm'>Edit</button>")
+                    .append("<button class='btn btn-danger btn-sm'>Delete</button>")
+                    .append("</td>")
+                    .append("</tr>");
+        }
+        return sb.toString();
+    }
 
-//
-//    @GetMapping("/database/clients/search")
-//    @ResponseBody
-//    public List<Map<String, Object>> searchClients(@RequestParam String query) {
-//        List<Client> clients = clientService.searchClients(query);
-//        return clients.stream().map(client -> {
-//            Map<String, Object> map = new HashMap<>();
-//            map.put("id", client.getId());
-//            map.put("firstName", client.getFirstName());
-//            map.put("lastName", client.getLastName());
-//            return map;
-//        }).toList();
-//    }
+    private String generateStaffRowsHtml(Page<Staff> tablePage) {
+        StringBuilder sb = new StringBuilder();
+        for (Staff staff : tablePage.getContent()) {
+            sb.append("<tr>")
+                    .append("<td>").append(staff.getFirstName()).append("</td>")
+                    .append("<td>").append(staff.getLastName()).append("</td>")
+                    .append("<td>").append(staff.getMiddleName() != null ? staff.getMiddleName() : "").append("</td>")
+                    .append("<td>").append(staff.getPhone() != null ? staff.getPhone() : "").append("</td>")
+                    .append("<td>").append(staff.getPosition() != null ? staff.getPosition() : "" ).append("</td>")
+                    .append("<td>")
+                    .append("<button class='btn btn-warning btn-sm'>Edit</button>")
+                    .append("<button class='btn btn-danger btn-sm'>Delete</button>")
+                    .append("</td>")
+                    .append("</tr>");
+        }
+        return sb.toString();
+    }
+
+    private String generateProcedureRowsHtml(Page<Procedure> proceduresPage) {
+        StringBuilder sb = new StringBuilder();
+        for (Procedure procedure : proceduresPage) {
+            sb.append("<tr>")
+                    .append("<td>").append(procedure.getId()).append("</td>")
+                    .append("<td>").append(procedure.getName()).append("</td>")
+                    .append("<td>").append(procedure.getDescription()).append("</td>")
+                    .append("<td>")
+                    .append("<button class='btn btn-warning btn-sm'>Edit</button>")
+                    .append("<button class='btn btn-danger btn-sm'>Delete</button>")
+                    .append("</td>")
+                    .append("</tr>");
+        }
+        return sb.toString();
+    }
 
 }

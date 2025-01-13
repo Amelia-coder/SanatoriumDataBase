@@ -45,4 +45,11 @@ public class TicketService {
     public Page<Ticket> getTickets(Pageable pageable) {
         return repository.findAll(pageable);
     }
+
+
+    public Page<Ticket> searchTickets(String search, Pageable pageable) {
+        return repository.searchTickets(search, pageable);
+    }
+
+
 }
