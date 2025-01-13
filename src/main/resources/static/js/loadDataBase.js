@@ -15,6 +15,16 @@ document.addEventListener('DOMContentLoaded', function () {
             currentSearchQuery = '';
             loadData(currentTable, currentPage, currentSize, currentSearchQuery);
         });
+
+        const itemsPerPageSelect = document.getElementById(`${currentTable}ItemsPerPage`);
+        itemsPerPageSelect.addEventListener('change', function () {
+            currentSize = parseInt(this.value);
+            const totalPages = Math.ceil(totalElements / currentSize);
+            if (currentPage >= totalPages) {
+                currentPage = totalPages - 1;
+            }
+            loadData(currentTable, currentPage, currentSize, currentSearchQuery);
+        });
     });
 
     // Обработчик для изменения количества элементов на странице

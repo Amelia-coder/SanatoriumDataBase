@@ -1,0 +1,23 @@
+<!-- fragments/clientTable.html -->
+<!-- src/main/resources/templates/fragments/clientTable.html -->
+<tbody th:fragment="roomRows">
+<tr th:each="client : ${roomsPage.content}">
+    <td th:text="${room.number}">ID</td>
+    <td th:text="${room.building}">First Name</td>
+    <td th:text="${room.floor}">Last Name</td>
+    <td>
+        <button class="btn btn-warning btn-sm">Edit</button>
+        <button class="btn btn-danger btn-sm">Delete</button>
+    </td>
+</tr>
+</tbody>
+
+
+<!-- Пагинация -->
+<nav class="d-flex align-items-center">
+    <button class="btn btn-secondary me-2" id="prevPageBtn">Previous</button>
+
+    <select id="pageSelect" class="form-select w-auto me-2"></select>
+
+    <button class="btn btn-secondary" id="nextPageBtn">Next</button>
+</nav>
