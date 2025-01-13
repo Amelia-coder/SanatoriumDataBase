@@ -28,8 +28,12 @@ public class ClientService {
     }
 
     public void addClient(Client client) {
-        repository.save(client);
+        if (client.getId() != null && repository.existsById(client.getId())) {
+            throw new InvalidDataException("Client with this ID already exists");
+        }
+        repository.save(client); // Выполняется только если ID не занят
     }
+
 
     public void updateClient(Long id, Client updatedClient) {
         Client existingClient = getClientById(id);

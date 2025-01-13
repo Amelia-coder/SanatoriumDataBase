@@ -218,4 +218,35 @@ public class WebController {
         return sb.toString();
     }
 
+    @GetMapping("/database/{table}/new")
+    public String showAddForm(Model model) {
+        model.addAttribute("client", new Client());
+        return "add-client";
+    }
+
+    @PostMapping("/database")
+    public String addClient(@ModelAttribute Client client) {
+        clientService.addClient(client);
+        return "redirect:/database/{table}";
+    }
+
+    @GetMapping("/database/{table}/edit/{id}")
+    public String showEditForm(@PathVariable Long id, Model model) {
+        Client client = clientService.getClientById(id);
+        model.addAttribute("client", client);
+        return "edit-client";
+    }
+
+    @PostMapping("/database/{table}/{id}")
+    public String updateClient(@PathVariable Long id, @ModelAttribute Client updatedClient) {
+        clientService.updateClient(id, updatedClient);
+        return "redirect:/clients";
+    }
+
+    @GetMapping("/database/{table}/{id}")
+    public String deleteClient(@PathVariable Long id) {
+        clientService.deleteClient(id);
+        return "redirect:/clients";
+    }
+
 }
