@@ -179,12 +179,10 @@
             <table class="table table-striped">
                 <thead>
                 <tr>
-                    <th>Client Id</th>
-                    <th>Room Number</th>
-                    <th>Doctor Id</th>
-                    <th>Assignment Id</th>
+                    <th>Client</th>
                     <th>Date In</th>
                     <th>Date out</th>
+                    <th>Actions</th>
                 </tr>
                 </thead>
                 <tbody id="ticketsTableContent">
@@ -315,6 +313,43 @@
 
             <nav>
                 <ul class="pagination" id="proceduresPagination"></ul>
+            </nav>
+        </div>
+
+        <div class="tab-pane fade" id="assignment" role="tabpanel" aria-labelledby="assignment-tab"
+             data-table="value">
+            <h3>Assignments</h3>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <div>
+                    <label for="itemsPerPageClients" class="form-label me-2">Показать:</label>
+                    <select id="itemsPerPageAssignments" class="form-select d-inline w-auto">
+                        <option value="5">5</option>
+                        <option value="10" selected>10</option>
+                        <option value="20">20</option>
+                        <option value="50">50</option>
+                    </select>
+                </div>
+            </div>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <!--                    <th>ID</th>-->
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Middle Name</th>
+                    <th>Phone</th>
+                    <th>Resort Card</th>
+                    <th>Actions</th>
+                </tr>
+
+                </thead>
+                <tbody id="assignmentsTableContent">
+                <!-- Данные будут подгружаться сюда -->
+                </tbody>
+            </table>
+
+            <nav>
+                <ul class="pagination" id="assignmentsPagination"></ul>
             </nav>
         </div>
 

@@ -14,7 +14,7 @@ import java.util.List;
 public class Office {
 
     @Id
-    @Column(name = "number")
+    @Column(name = "id")
     private Integer number;
 
     @Column(name = "floor", nullable = false)

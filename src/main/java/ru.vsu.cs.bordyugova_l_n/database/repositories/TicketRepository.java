@@ -10,14 +10,16 @@ import java.util.List;
 
 @Repository
 public interface TicketRepository extends JpaRepository<Ticket, Integer> {
-    @Query("""
-    SELECT t FROM Ticket t
-    JOIN t.client c
-    JOIN t.doctor s
-    WHERE (:search IS NULL OR LOWER(c.firstName) LIKE LOWER(CONCAT('%', :search, '%')) 
-    OR LOWER(c.lastName) LIKE LOWER(CONCAT('%', :search, '%'))
-    OR LOWER(CONCAT(s.firstName, ' ', s.lastName)) LIKE LOWER(CONCAT('%', :search, '%')))
-""")
-    Page<Ticket> searchTickets(String search, Pageable pageable);
+//    @Query("""
+//    SELECT t FROM Ticket t
+//    JOIN t.client c
+//    JOIN t.doctor s
+//    WHERE (:search IS NULL OR LOWER(c.firstName) LIKE LOWER(CONCAT('%', :search, '%'))
+//    OR LOWER(c.lastName) LIKE LOWER(CONCAT('%', :search, '%'))
+//    OR LOWER(CONCAT(s.firstName, ' ', s.lastName)) LIKE LOWER(CONCAT('%', :search, '%')))
+//""")
+//    Page<Ticket> searchTickets(String search, Pageable pageable);
+    Page<Ticket> findAll(Pageable pageable);
+
 
 }

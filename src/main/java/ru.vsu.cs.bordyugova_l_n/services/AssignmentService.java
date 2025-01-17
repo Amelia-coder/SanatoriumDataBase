@@ -45,4 +45,8 @@ public class AssignmentService {
     public Page<Assignment> getAssignments(Pageable pageable) {
         return repository.findAll(pageable);
     }
+
+    public Page<Assignment> getAssignmentsForTicketId(Pageable pageable, Long ticketId) {
+        return repository.getAssignmentsByTicketId(pageable, ticketId);
+    }
 }

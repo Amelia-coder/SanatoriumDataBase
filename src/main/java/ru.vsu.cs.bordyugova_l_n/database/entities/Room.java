@@ -14,7 +14,7 @@ import java.util.List;
 public class Room {
 
     @Id
-    @Column(name = "number")
+    @Column(name = "id")
     private Integer number;
 
     @Column(name = "floor", nullable = false)

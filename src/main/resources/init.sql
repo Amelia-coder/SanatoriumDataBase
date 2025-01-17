@@ -6,6 +6,8 @@ DROP TABLE IF EXISTS room CASCADE;
 DROP TABLE IF EXISTS procedure CASCADE;
 DROP TABLE IF EXISTS staff CASCADE;
 DROP TABLE IF EXISTS office CASCADE;
+DROP TABLE IF EXISTS direction;
+DROP TABLE IF EXISTS direction_procedure;
 
 
 -- SQL-скрипт для создания базы данных санатория

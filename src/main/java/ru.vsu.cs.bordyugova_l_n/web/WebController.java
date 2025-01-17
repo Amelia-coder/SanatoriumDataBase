@@ -6,12 +6,15 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.WebRequest;
+import ru.vsu.cs.bordyugova_l_n.database.entities.Assignment;
 import ru.vsu.cs.bordyugova_l_n.database.entities.Client;
 import ru.vsu.cs.bordyugova_l_n.database.entities.Office;
 import ru.vsu.cs.bordyugova_l_n.database.entities.Procedure;
 import ru.vsu.cs.bordyugova_l_n.database.entities.Room;
 import ru.vsu.cs.bordyugova_l_n.database.entities.Staff;
 import ru.vsu.cs.bordyugova_l_n.database.entities.Ticket;
+import ru.vsu.cs.bordyugova_l_n.services.AssignmentService;
 import ru.vsu.cs.bordyugova_l_n.services.ClientService;
 import ru.vsu.cs.bordyugova_l_n.services.OfficeService;
 import ru.vsu.cs.bordyugova_l_n.services.ProcedureService;
@@ -32,14 +35,16 @@ public class WebController {
     private final OfficeService officeService;
     private final StaffService staffService;
     private final ProcedureService procedureService;
+    private final AssignmentService assignmentService;
 
-    public WebController(ClientService clientService, RoomService roomService, TicketService ticketService, OfficeService officeService, StaffService staffService, ProcedureService procedureService) {
+    public WebController(ClientService clientService, RoomService roomService, TicketService ticketService, OfficeService officeService, StaffService staffService, ProcedureService procedureService, AssignmentService assignmentService) {
         this.clientService = clientService;
         this.roomService = roomService;
         this.ticketService = ticketService;
         this.officeService = officeService;
         this.staffService = staffService;
         this.procedureService = procedureService;
+        this.assignmentService = assignmentService;
     }
 
     @GetMapping("/")
@@ -57,7 +62,7 @@ public class WebController {
     public Map<String, Object> getTablePage(@PathVariable String table,
                                             @RequestParam(defaultValue = "0") int page,
                                             @RequestParam(defaultValue = "10") int size,
-                                            @RequestParam(defaultValue = "") String search) {
+                                            @RequestParam(defaultValue = "") String search, WebRequest webRequest) {
 
         switch (table.toLowerCase()) {
             case "clients": {
@@ -76,8 +81,8 @@ public class WebController {
             }
             case "tickets": {
                 Page<Ticket> ticketsPage = search.isEmpty()
-                        ? ticketService.getTickets(PageRequest.of(page, size))
-                        : ticketService.searchTickets(search, PageRequest.of(page, size));
+                        ? ticketService.getTickets(PageRequest.of(page, size)) : null;
+//                        : ticketService.searchTickets(search, PageRequest.of(page, size));
                 return generateResponse(ticketsPage, this::generateTicketRowsHtml);
             }
             case "offices": {
@@ -94,9 +99,18 @@ public class WebController {
 
                 return generateResponse(staffsPage, this::generateStaffRowsHtml);
             }
-            case "procedures":
+            case "procedures": {
                 Page<Procedure> proceduresPage = procedureService.getProcedures(PageRequest.of(page, size));
                 return generateResponse(proceduresPage, this::generateProcedureRowsHtml);
+
+            }
+            case "assignments": {
+                Long ticketId = Long.parseLong(search);
+                Page<Assignment> assignmentsPage = assignmentService.getAssignmentsForTicketId(PageRequest.of(page, size), ticketId);
+                Client client = clientService.getClientById(ticketId);
+                String clientName = client.getFirstName() + " " +  " " + client.getFirstName();
+                return generateResponseForAssignment(assignmentsPage, this::generateAssignmentsRowsHtml, clientName);
+            }
 
             default:
                 throw new IllegalArgumentException("Unknown table: " + table);
@@ -106,6 +120,17 @@ public class WebController {
     private <T> Map<String, Object> generateResponse(Page<T> page, Function<Page<T>, String> htmlGenerator) {
         Map<String, Object> response = new HashMap<>();
         response.put("contentHtml", htmlGenerator.apply(page));
+        response.put("number", page.getNumber());
+        response.put("totalPages", page.getTotalPages());
+        response.put("first", page.isFirst());
+        response.put("last", page.isLast());
+        return response;
+    }
+
+    private <T> Map<String, Object> generateResponseForAssignment(Page<T> page, Function<Page<T>, String> htmlGenerator, String clientName) {
+        Map<String, Object> response = new HashMap<>();
+        String pageContent = "<label> 'Assignments for  " + clientName + " </label> " + htmlGenerator.apply(page);
+        response.put("contentHtml", pageContent);
         response.put("number", page.getNumber());
         response.put("totalPages", page.getTotalPages());
         response.put("first", page.isFirst());
@@ -153,13 +178,14 @@ public class WebController {
             sb.append("<tr>")
                     .append("<td>").append(ticket.getClient().getFirstName()).append(" ")
                     .append(ticket.getClient().getLastName()).append("</td>")
-                    .append("<td>").append(ticket.getRoom().getNumber()).append("</td>")
-                    .append("<td>").append(ticket.getDoctor().getFirstName()).append(" ")
-                    .append(ticket.getDoctor().getLastName()).append("</td>")
-                    .append("<td>").append(ticket.getAssignmentId()).append("</td>")
+//                    .append("<td>").append(ticket.getRoom().getNumber()).append("</td>")
+//                    .append("<td>").append(ticket.getDoctor().getFirstName()).append(" ")
+//                    .append(ticket.getDoctor().getLastName()).append("</td>")
+//                    .append("<td>").append(ticket.getAssignmentId()).append("</td>")
                     .append("<td>").append(ticket.getCheckInDate()).append("</td>")
                     .append("<td>").append(ticket.getCheckOutDate()).append("</td>")
                     .append("<td>")
+                    .append("<button class='btn btn-success btn-sm' data-ticketId= "+ ticket.getId() +">Show Assignment</button>")
                     .append("<button class='btn btn-warning btn-sm'>Edit</button>")
                     .append("<button class='btn btn-danger btn-sm'>Delete</button>")
                     .append("</td>")
@@ -209,6 +235,22 @@ public class WebController {
                     .append("<td>").append(procedure.getId()).append("</td>")
                     .append("<td>").append(procedure.getName()).append("</td>")
                     .append("<td>").append(procedure.getDescription()).append("</td>")
+                    .append("<td>")
+                    .append("<button class='btn btn-warning btn-sm'>Edit</button>")
+                    .append("<button class='btn btn-danger btn-sm'>Delete</button>")
+                    .append("</td>")
+                    .append("</tr>");
+        }
+        return sb.toString();
+    }
+
+    private String generateAssignmentsRowsHtml(Page<Assignment> assignmentPage) {
+        StringBuilder sb = new StringBuilder();
+        for (Assignment assignment : assignmentPage) {
+            sb.append("<tr>")
+                    .append("<td>").append(assignment.getProcedure().getDescription())
+                    .append("<td>").append(assignment.getStaff()).append("</td>")
+                    .append("<td>").append(assignment.getDuration()).append("</td>")
                     .append("<td>")
                     .append("<button class='btn btn-warning btn-sm'>Edit</button>")
                     .append("<button class='btn btn-danger btn-sm'>Delete</button>")

@@ -32,10 +32,10 @@ public class Client {
     private String email;
 
     @ManyToOne
-    @JoinColumn(name = "roomnumber")
+    @JoinColumn(name = "room_id")
     private Room room;
 
-    @Column(name = "resortcard")
+    @Column(name = "resort_card")
     private String resortCard;
 
     public void update(Client client) {
