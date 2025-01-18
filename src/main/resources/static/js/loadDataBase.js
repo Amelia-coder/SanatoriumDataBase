@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function () {
             currentTable = this.getAttribute('data-table');
             currentPage = 0;
             currentSearchQuery = '';
-
+            document.querySelector("#assignment").className = "tab-pane fade";
             const currentSelect = document.querySelector(`#itemsPerPage${capitalize(currentTable)}`);
             currentSize = parseInt(currentSelect.value);
 
@@ -61,8 +61,8 @@ document.addEventListener('DOMContentLoaded', function () {
         if (event.target.matches('.btn-success')) {
             const ticketId = event.target.getAttribute("data-ticketId");
             let splittedClassName = document.querySelector("#ticket").className.split(" ");
-            document.querySelector('#ticket').className = splittedClassName[0] + splittedClassName[1];
-            document.querySelector("#assignment").className += splittedClassName[2] + splittedClassName[3];
+            document.querySelector('#ticket').className = splittedClassName[0] + " " + splittedClassName[1];
+            document.querySelector("#assignment").className += " " + splittedClassName[2] + " " + splittedClassName[3];
             loadData("assignments", 0, 10, ticketId);
         }
         // Обработка кнопки редактирования

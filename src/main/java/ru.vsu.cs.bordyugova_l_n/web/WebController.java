@@ -92,10 +92,10 @@ public class WebController {
 
                 return generateResponse(officesPage, this::generateOfficeRowsHtml);
             }
-            case "staff": {
+            case "staffs": {
                 Page<Staff> staffsPage = search.isEmpty()
-                        ? staffService.getStaffs(PageRequest.of(page, size))
-                        : staffService.searchStaffs(search, PageRequest.of(page, size));
+                        ? staffService.getStaffs(PageRequest.of(page, size)) : null;
+//                        : staffService.searchStaffs(search, PageRequest.of(page, size));
 
                 return generateResponse(staffsPage, this::generateStaffRowsHtml);
             }
