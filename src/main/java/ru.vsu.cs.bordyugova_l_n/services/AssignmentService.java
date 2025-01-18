@@ -22,7 +22,7 @@ public class AssignmentService {
     }
 
     public Assignment getAssignmentById(Integer id) {
-        return repository.findById(Long.valueOf(id)).orElseThrow(() -> new InvalidDataException("Assignment not found with ID: " + id));
+        return repository.findById(Integer.valueOf(id)).orElseThrow(() -> new InvalidDataException("Assignment not found with ID: " + id));
     }
 
     public void addAssignment(Assignment assignment) {
@@ -36,17 +36,18 @@ public class AssignmentService {
     }
 
     public void deleteAssignment(Integer id) {
-        if (!repository.existsById(Long.valueOf(id))) {
+        if (!repository.existsById(Integer.valueOf(id))) {
             throw new InvalidDataException("Assignment not found with ID: " + id);
         }
-        repository.deleteById(Long.valueOf(id));
+        repository.deleteById(Integer.valueOf(id));
     }
 
     public Page<Assignment> getAssignments(Pageable pageable) {
         return repository.findAll(pageable);
     }
 
-    public Page<Assignment> getAssignmentsForTicketId(Pageable pageable, Long ticketId) {
-        return repository.getAssignmentsByTicketId(pageable, ticketId);
+    public Page<Assignment> getAssignmentsForTicketId(Pageable pageable, Integer ticketId) {
+        return repository.getAssignmentsByTicket_Id(pageable, ticketId);
     }
+
 }

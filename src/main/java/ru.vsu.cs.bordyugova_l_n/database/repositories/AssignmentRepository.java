@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 import ru.vsu.cs.bordyugova_l_n.database.entities.Assignment;
 
 @Repository
-public interface AssignmentRepository extends JpaRepository<Assignment, Long> {
-    Page<Assignment> getAssignmentsByTicketId(Pageable pageable, Long ticketId);
+public interface AssignmentRepository extends JpaRepository<Assignment, Integer> {
+    Page<Assignment> getAssignmentsByTicket_Id(Pageable pageable, Integer ticketId);
 }

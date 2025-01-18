@@ -25,7 +25,7 @@ public class ClientController {
 
     @GetMapping("/{id}")
     public Client getClientById(@PathVariable Integer id) {
-        return service.getClientById(Long.valueOf(id));
+        return service.getClientById((id));
     }
 
     @PostMapping
@@ -35,12 +35,12 @@ public class ClientController {
 
     @PutMapping("/{id}")
     public void updateClient(@PathVariable Integer id, @RequestBody Client updatedClient) {
-        service.updateClient(Long.valueOf(id), updatedClient);
+        service.updateClient((id), updatedClient);
     }
 
     @DeleteMapping("/{id}")
     public void deleteClient(@PathVariable Integer id) {
-        service.deleteClient(Long.valueOf(id));
+        service.deleteClient(id);
     }
 
 

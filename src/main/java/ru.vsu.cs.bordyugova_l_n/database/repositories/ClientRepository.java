@@ -9,7 +9,7 @@ import ru.vsu.cs.bordyugova_l_n.database.entities.Client;
 import java.util.List;
 
 @Repository
-public interface ClientRepository extends JpaRepository<Client, Long> {
+public interface ClientRepository extends JpaRepository<Client, Integer> {
     Page<Client> findAll(Pageable pageable);
     Page<Client> findByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCase(String firstName, String lastName, Pageable pageable);
 

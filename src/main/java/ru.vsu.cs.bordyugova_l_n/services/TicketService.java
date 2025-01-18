@@ -21,7 +21,7 @@ public class TicketService {
         return repository.findAll();
     }
 
-    public Ticket getTicketById(Long id) {
+    public Ticket getTicketById(Integer id) {
         return repository.findById(Math.toIntExact(id)).orElseThrow(() -> new InvalidDataException("Ticket not found with ID: " + id));
     }
 
@@ -29,13 +29,13 @@ public class TicketService {
         repository.save(ticket);
     }
 
-    public void updateTicket(Long id, Ticket updatedTicket) {
+    public void updateTicket(Integer id, Ticket updatedTicket) {
         Ticket existingTicket = getTicketById(id);
         existingTicket.update(updatedTicket);
         repository.save(existingTicket);
     }
 
-    public void deleteTicket(Long id) {
+    public void deleteTicket(Integer id) {
         if (!repository.existsById(Math.toIntExact(id))) {
             throw new InvalidDataException("Ticket not found with ID: " + id);
         }

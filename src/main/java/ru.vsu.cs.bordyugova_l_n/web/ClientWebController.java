@@ -42,20 +42,20 @@ public class ClientWebController {
     }
 
     @GetMapping("/edit/{id}")
-    public String showEditForm(@PathVariable Long id, Model model) {
+    public String showEditForm(@PathVariable Integer id, Model model) {
         Client client = clientService.getClientById(id);
         model.addAttribute("client", client);
         return "edit-client";
     }
 
     @PostMapping("/update/{id}")
-    public String updateClient(@PathVariable Long id, @ModelAttribute Client updatedClient) {
+    public String updateClient(@PathVariable Integer id, @ModelAttribute Client updatedClient) {
         clientService.updateClient(id, updatedClient);
         return "redirect:/clients";
     }
 
     @GetMapping("/delete/{id}")
-    public String deleteClient(@PathVariable Long id) {
+    public String deleteClient(@PathVariable Integer id) {
         clientService.deleteClient(id);
         return "redirect:/clients";
     }

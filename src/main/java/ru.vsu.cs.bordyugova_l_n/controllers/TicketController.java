@@ -22,7 +22,7 @@ public class TicketController {
 
     @GetMapping("/{id}")
     public Ticket getTicketById(@PathVariable Integer id) {
-        return service.getTicketById(Long.valueOf(id));
+        return service.getTicketById(id);
     }
 
     @PostMapping
@@ -32,11 +32,11 @@ public class TicketController {
 
     @PutMapping("/{id}")
     public void updateTicket(@PathVariable Integer id, @RequestBody Ticket updatedTicket) {
-        service.updateTicket(Long.valueOf(id), updatedTicket);
+        service.updateTicket((id), updatedTicket);
     }
 
     @DeleteMapping("/{id}")
     public void deleteTicket(@PathVariable Integer id) {
-        service.deleteTicket(Long.valueOf(id));
+        service.deleteTicket(id);
     }
 }

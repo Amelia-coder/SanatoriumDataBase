@@ -23,7 +23,7 @@ public class ClientService {
     }
 
 
-    public Client getClientById(Long id) {
+    public Client getClientById(Integer id) {
         return repository.findById(id).orElseThrow(() -> new InvalidDataException("Client not found with ID: " + id));
     }
 
@@ -35,13 +35,13 @@ public class ClientService {
     }
 
 
-    public void updateClient(Long id, Client updatedClient) {
+    public void updateClient(Integer id, Client updatedClient) {
         Client existingClient = getClientById(id);
         existingClient.update(updatedClient);
         repository.save(existingClient);
     }
 
-    public void deleteClient(Long id) {
+    public void deleteClient(Integer id) {
         if (!repository.existsById(id)) {
             throw new InvalidDataException("Client not found with ID: " + id);
         }

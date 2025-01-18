@@ -14,7 +14,7 @@ public class Client {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // Автоматическая генерация ID
     @Column(name = "id")
-    private Long id;
+    private Integer id;
 
     @Column(name = "first_name", nullable = false)
     private String firstName;

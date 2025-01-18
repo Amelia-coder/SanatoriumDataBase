@@ -20,7 +20,7 @@ public class Ticket {
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "client_id", nullable = false)
+    @JoinColumn(name = "client_id")
     private Client client;
 
     @OneToMany(mappedBy = "ticket")
@@ -38,11 +38,11 @@ public class Ticket {
 //    private Integer assignmentId;
 
     @Temporal(TemporalType.DATE)
-    @Column(name = "check_in_date", nullable = false)
+    @Column(name = "check_in_date")
     private java.util.Date checkInDate;
 
     @Temporal(TemporalType.DATE)
-    @Column(name = "check_out_date", nullable = false)
+    @Column(name = "check_out_date")
     private java.util.Date checkOutDate;
 
 

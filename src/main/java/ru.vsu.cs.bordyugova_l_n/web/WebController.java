@@ -105,10 +105,11 @@ public class WebController {
 
             }
             case "assignments": {
-                Long ticketId = Long.parseLong(search);
+                Integer ticketId = Integer.parseInt(search);
                 Page<Assignment> assignmentsPage = assignmentService.getAssignmentsForTicketId(PageRequest.of(page, size), ticketId);
-                Client client = clientService.getClientById(ticketId);
+                Client client = ticketService.getTicketById(ticketId).getClient();
                 String clientName = client.getFirstName() + " " +  " " + client.getFirstName();
+                System.out.println(assignmentsPage);
                 return generateResponseForAssignment(assignmentsPage, this::generateAssignmentsRowsHtml, clientName);
             }
 
@@ -147,6 +148,8 @@ public class WebController {
                     .append("<td>").append(client.getMiddleName() != null ? client.getMiddleName() : "").append("</td>")
                     .append("<td>").append(client.getPhone() != null ? client.getPhone() : "").append("</td>")
                     .append("<td>").append(client.getResortCard() != null ? client.getResortCard() : "").append("</td>")
+                    .append("<td>").append(client.getEmail() != null ? client.getEmail() : "").append("</td>")
+                    .append("<td>").append(client.getRoom().getNumber()).append("</td>")
                     .append("<td>")
                     .append("<button class='btn btn-warning btn-sm' data-id='"+ client.getId() + "'>Edit</button>")
                     .append("<button class='btn btn-danger btn-sm' data-id='" + client.getId() + "'>Delete</button>")
@@ -163,6 +166,7 @@ public class WebController {
                     .append("<td>").append(room.getNumber()).append("</td>")
                     .append("<td>").append(room.getBuilding()).append("</td>")
                     .append("<td>").append(room.getFloor()).append("</td>")
+                    .append("<td>").append(room.getClients().size()).append("</td>")
                     .append("<td>")
                     .append("<button class='btn btn-warning btn-sm'>Edit</button>")
                     .append("<button class='btn btn-danger btn-sm'>Delete</button>")
@@ -250,7 +254,7 @@ public class WebController {
             sb.append("<tr>")
                     .append("<td>").append(assignment.getProcedure().getDescription())
                     .append("<td>").append(assignment.getStaff()).append("</td>")
-                    .append("<td>").append(assignment.getDuration()).append("</td>")
+//                    .append("<td>").append(assignment.getDuration()).append("</td>")
                     .append("<td>")
                     .append("<button class='btn btn-warning btn-sm'>Edit</button>")
                     .append("<button class='btn btn-danger btn-sm'>Delete</button>")
@@ -273,20 +277,20 @@ public class WebController {
     }
 
     @GetMapping("/database/{table}/edit/{id}")
-    public String showEditForm(@PathVariable Long id, Model model) {
+    public String showEditForm(@PathVariable Integer id, Model model) {
         Client client = clientService.getClientById(id);
         model.addAttribute("client", client);
         return "edit-client";
     }
 
     @PostMapping("/database/{table}/{id}")
-    public String updateClient(@PathVariable Long id, @ModelAttribute Client updatedClient) {
+    public String updateClient(@PathVariable Integer id, @ModelAttribute Client updatedClient) {
         clientService.updateClient(id, updatedClient);
         return "redirect:/clients";
     }
 
     @GetMapping("/database/{table}/{id}")
-    public String deleteClient(@PathVariable Long id) {
+    public String deleteClient(@PathVariable Integer id) {
         clientService.deleteClient(id);
         return "redirect:/clients";
     }
