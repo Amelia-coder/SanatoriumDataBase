@@ -44,6 +44,7 @@ public class ClientWebController {
     public String addClient(@RequestBody ClientDTO clientDTO) {
         Client client = new Client();
         client.setFirstName(clientDTO.getFirstName());
+        client.setMiddleName(clientDTO.getMiddleName());
         client.setLastName(clientDTO.getLastName());
         client.setPhone(clientDTO.getPhone());
         client.setEmail(clientDTO.getEmail());
