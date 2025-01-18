@@ -105,12 +105,20 @@ public class WebController {
 
             }
             case "assignments": {
-                Integer ticketId = Integer.parseInt(search);
-                Page<Assignment> assignmentsPage = assignmentService.getAssignmentsForTicketId(PageRequest.of(page, size), ticketId);
-                Client client = ticketService.getTicketById(ticketId).getClient();
-                String clientName = client.getFirstName() + " " +  " " + client.getFirstName();
-                System.out.println(assignmentsPage);
-                return generateResponseForAssignment(assignmentsPage, this::generateAssignmentsRowsHtml, clientName);
+                String[] option = search.split("=");
+                if(option[0].equals("data-ticketId")) {
+                    Integer ticketId = Integer.parseInt(option[1]);
+                    Page<Assignment> assignmentsPage = assignmentService.getAssignmentsForTicketId(PageRequest.of(page, size), ticketId);
+                    Client client = ticketService.getTicketById(ticketId).getClient();
+                    String clientName = client.getFirstName() + " " + " " + client.getFirstName();
+                    return generateResponseForAssignment(assignmentsPage, this::generateAssignmentsRowsHtml, clientName);
+                } else if (option[0].equals("data-staffId")) {
+                    Integer staffId = Integer.parseInt(option[1]);
+                    Page<Assignment> assignmentsPage = assignmentService.getAssignmentsForStaffId(PageRequest.of(page, size), staffId);
+                    Staff staff = staffService.getStaffById(Long.valueOf(staffId));
+                    String staffName = staff.getFirstName() + " " + " " + staff.getLastName();
+                    return generateResponseForProcedure(assignmentsPage, this::generateStaffProceduresRowsHtml, staffName);
+                }
             }
 
             default:
@@ -130,7 +138,18 @@ public class WebController {
 
     private <T> Map<String, Object> generateResponseForAssignment(Page<T> page, Function<Page<T>, String> htmlGenerator, String clientName) {
         Map<String, Object> response = new HashMap<>();
-        String pageContent = "<label> 'Assignments for  " + clientName + " </label> " + htmlGenerator.apply(page);
+        String pageContent = htmlGenerator.apply(page);
+        response.put("contentHtml", pageContent);
+        response.put("number", page.getNumber());
+        response.put("totalPages", page.getTotalPages());
+        response.put("first", page.isFirst());
+        response.put("last", page.isLast());
+        return response;
+    }
+
+    private <T> Map<String, Object> generateResponseForProcedure(Page<T> page, Function<Page<T>, String> htmlGenerator, String staffName) {
+        Map<String, Object> response = new HashMap<>();
+        String pageContent = htmlGenerator.apply(page);
         response.put("contentHtml", pageContent);
         response.put("number", page.getNumber());
         response.put("totalPages", page.getTotalPages());
@@ -151,7 +170,7 @@ public class WebController {
                     .append("<td>").append(client.getEmail() != null ? client.getEmail() : "").append("</td>")
                     .append("<td>").append(client.getRoom().getNumber()).append("</td>")
                     .append("<td>")
-                    .append("<button class='btn btn-warning btn-sm' data-id='"+ client.getId() + "'>Edit</button>")
+                    .append("<button class='btn btn-warning btn-sm' data-id='" + client.getId() + "'>Edit</button>")
                     .append("<button class='btn btn-danger btn-sm' data-id='" + client.getId() + "'>Delete</button>")
                     .append("</td>")
                     .append("</tr>");
@@ -189,7 +208,7 @@ public class WebController {
                     .append("<td>").append(ticket.getCheckInDate()).append("</td>")
                     .append("<td>").append(ticket.getCheckOutDate()).append("</td>")
                     .append("<td>")
-                    .append("<button class='btn btn-success btn-sm' data-ticketId= "+ ticket.getId() +">Show Assignment</button>")
+                    .append("<button class='btn btn-success btn-sm' data-entity=assignment data-ticketId= " + ticket.getId() + ">Show Assignment</button>")
                     .append("<button class='btn btn-warning btn-sm'>Edit</button>")
                     .append("<button class='btn btn-danger btn-sm'>Delete</button>")
                     .append("</td>")
@@ -200,7 +219,7 @@ public class WebController {
 
     private String generateOfficeRowsHtml(Page<Office> tablePage) {
         StringBuilder sb = new StringBuilder();
-        for (Office office: tablePage.getContent()) {
+        for (Office office : tablePage.getContent()) {
             sb.append("<tr>")
                     .append("<td>").append(office.getNumber()).append("</td>")
                     .append("<td>").append(office.getBuilding()).append("</td>")
@@ -222,7 +241,23 @@ public class WebController {
                     .append("<td>").append(staff.getLastName()).append("</td>")
                     .append("<td>").append(staff.getMiddleName() != null ? staff.getMiddleName() : "").append("</td>")
                     .append("<td>").append(staff.getPhone() != null ? staff.getPhone() : "").append("</td>")
-                    .append("<td>").append(staff.getPosition() != null ? staff.getPosition() : "" ).append("</td>")
+                    .append("<td>").append(staff.getPosition() != null ? staff.getPosition() : "").append("</td>")
+                    .append("<td>")
+                    .append("<button class='btn btn-success btn-sm' data-entity=assignment data-staffId= " + staff.getId() + ">Show Assignment</button>")
+                    .append("<button class='btn btn-warning btn-sm'>Edit</button>")
+                    .append("<button class='btn btn-danger btn-sm'>Delete</button>")
+                    .append("</td>")
+                    .append("</tr>");
+        }
+        return sb.toString();
+    }
+
+    private String generateStaffProceduresRowsHtml(Page<Assignment> assignments) {
+        StringBuilder sb = new StringBuilder();
+        for (Assignment assignment : assignments) {
+            sb.append("<tr>")
+                    .append("<td>").append(assignment.getProcedure().getDescription())
+                    .append("<td>").append(assignment.getProcedure().getName()).append("</td>")
                     .append("<td>")
                     .append("<button class='btn btn-warning btn-sm'>Edit</button>")
                     .append("<button class='btn btn-danger btn-sm'>Delete</button>")
@@ -252,8 +287,14 @@ public class WebController {
         StringBuilder sb = new StringBuilder();
         for (Assignment assignment : assignmentPage) {
             sb.append("<tr>")
-                    .append("<td>").append(assignment.getProcedure().getDescription())
-                    .append("<td>").append(assignment.getStaff()).append("</td>")
+                    .append("<td>").append(assignment.getTicket().getClient().getFirstName()).append(" ")
+                    .append(assignment.getTicket().getClient().getLastName()).append("</td>")
+                    .append("<td>").append(assignment.getProcedure().getName()).append("</td>")
+                    .append("<td>").append(assignment.getProcedure().getDescription()).append(" ")
+                    .append("<td>").append(assignment.getStaff().getFirstName()).append(" ")
+                    .append(assignment.getStaff().getLastName()).append("</td>")
+                    .append("<td>").append(assignment.getOffice().getNumber()).append("</td>")
+                    .append("<td>").append(assignment.getStartTime()).append("</td>")
 //                    .append("<td>").append(assignment.getDuration()).append("</td>")
                     .append("<td>")
                     .append("<button class='btn btn-warning btn-sm'>Edit</button>")

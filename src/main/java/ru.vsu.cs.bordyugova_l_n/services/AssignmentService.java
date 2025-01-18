@@ -1,6 +1,7 @@
 package ru.vsu.cs.bordyugova_l_n.services;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.vsu.cs.bordyugova_l_n.database.entities.Assignment;
@@ -49,5 +50,10 @@ public class AssignmentService {
     public Page<Assignment> getAssignmentsForTicketId(Pageable pageable, Integer ticketId) {
         return repository.getAssignmentsByTicket_Id(pageable, ticketId);
     }
+
+    public Page<Assignment> getAssignmentsForStaffId(Pageable pageable, Integer staffId) {
+        return repository.getAssignmentsByStaff_Id(pageable, staffId);
+    }
+
 
 }

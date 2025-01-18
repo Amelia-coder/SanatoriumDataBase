@@ -9,4 +9,5 @@ import ru.vsu.cs.bordyugova_l_n.database.entities.Assignment;
 @Repository
 public interface AssignmentRepository extends JpaRepository<Assignment, Integer> {
     Page<Assignment> getAssignmentsByTicket_Id(Pageable pageable, Integer ticketId);
+    Page<Assignment> getAssignmentsByStaff_Id(Pageable pageable, Integer staffId);
 }

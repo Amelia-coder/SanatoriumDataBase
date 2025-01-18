@@ -59,11 +59,23 @@ document.addEventListener('DOMContentLoaded', function () {
 
     document.addEventListener('click', (event) => {
         if (event.target.matches('.btn-success')) {
-            const ticketId = event.target.getAttribute("data-ticketId");
-            let splittedClassName = document.querySelector("#ticket").className.split(" ");
-            document.querySelector('#ticket').className = splittedClassName[0] + " " + splittedClassName[1];
-            document.querySelector("#assignment").className += " " + splittedClassName[2] + " " + splittedClassName[3];
-            loadData("assignments", 0, 10, ticketId);
+            const entityName = event.target.getAttribute("data-entity");
+            if (entityName === "assignment") {
+                const ticketId = event.target.getAttribute("data-ticketId");
+                const staffId = event.target.getAttribute("data-staffId");
+                console.log(staffId);
+                if(ticketId != null) {
+                    let splittedClassName = document.querySelector("#ticket").className.split(" ");
+                    document.querySelector('#ticket').className = splittedClassName[0] + " " + splittedClassName[1];
+                    document.querySelector("#assignment").className += " " + splittedClassName[2] + " " + splittedClassName[3];
+                    loadData("assignments", 0, 10, "data-ticketId=" + ticketId);
+                } else if (staffId != null) {
+                    let splittedClassName = document.querySelector("#staff").className.split(" ");
+                    document.querySelector('#staff').className = splittedClassName[0] + " " + splittedClassName[1];
+                    document.querySelector("#assignment").className += " " + splittedClassName[2] + " " + splittedClassName[3];
+                    loadData("assignments", 0, 10, "data-staffId=" + staffId);
+                }
+            }
         }
         // Обработка кнопки редактирования
         if (event.target.matches('.btn-warning')) {
