@@ -29,6 +29,12 @@ public class Assignment {
     @Column(name = "start_time")
     private java.util.Date startTime;
 
+
+    @Temporal(TemporalType.DATE)
+    @Column(name = "date")
+    private java.util.Date date;
+
+
 //    @Column(name = "duration", nullable = false)
 //    private Integer duration;
 
