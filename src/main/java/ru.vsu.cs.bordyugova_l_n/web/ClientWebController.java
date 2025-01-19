@@ -1,7 +1,5 @@
 package ru.vsu.cs.bordyugova_l_n.web;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -63,13 +61,26 @@ public class ClientWebController {
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable Integer id, Model model) {
         Client client = clientService.getClientById(id);
+//        ClientDTO clientDTO = new ClientDTO(client); // Map entity to DTO
         model.addAttribute("client", client);
         return "edit-client";
     }
 
-    @PostMapping("/update/{id}")
-    public String updateClient(@PathVariable Integer id, @ModelAttribute Client updatedClient) {
-        clientService.updateClient(id, updatedClient);
+    @PostMapping("/update")
+    public String updateClient(@RequestBody ClientDTO clientDTO) {
+        Client updatedClient = new Client();
+        updatedClient.setId((clientDTO.getId()));
+        updatedClient.setFirstName(clientDTO.getFirstName());
+        updatedClient.setMiddleName(clientDTO.getMiddleName());
+        updatedClient.setLastName(clientDTO.getLastName());
+        updatedClient.setPhone(clientDTO.getPhone());
+        updatedClient.setEmail(clientDTO.getEmail());
+        updatedClient.setResortCard(clientDTO.getResortCard());
+        if (clientDTO.getRoom() != null) {
+            Room room = roomService.getRoomById(Long.valueOf(clientDTO.getRoom()));
+            updatedClient.setRoom(room);
+        }
+        clientService.updateClient(clientDTO.getId(), updatedClient);
         return "redirect:/clients";
     }
 

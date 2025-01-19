@@ -79,17 +79,10 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         // Обработка кнопки редактирования
         if (event.target.matches('.btn-warning')) {
-            const rowId = event.target.getAttribute('data-id');
-            const tableName = currentTable;
-
-            // Пример получения данных для редактирования (можно улучшить):
-            const updatedData = {
-                firstName: document.querySelector('#firstNameInput').value,
-                lastName: document.querySelector('#lastNameInput').value,
-                phone: document.querySelector('#phoneInput').value,
-            };
-
-            editRow(tableName, rowId, updatedData);
+            if (event.target.matches('.btn-editClient')) {
+                const id= event.target.getAttribute('data-id');
+                window.location.replace("http://localhost:8081/clients/edit/" + id);
+            }
         }
 
         // Обработка кнопки удаления
@@ -202,27 +195,12 @@ function generateSearchResultsHtml(data) {
         : '<tr><td colspan="4">Ничего не найдено</td></tr>';
 }
 
-function editRow(table, id, updatedData) {
-    const url = `/database/${table}/${id}`;
 
-    fetch(url, {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(updatedData),
-    })
-        .then(response => {
-            if (!response.ok) throw new Error(`Ошибка при редактировании записи в таблице ${table}`);
-            loadData(currentTable, currentPage, currentSize, currentSearchQuery); // Обновляем данные таблицы
-        })
-        .catch(error => console.error('Ошибка редактирования:', error));
-}
 
 function deleteRow(table, id) {
     if (confirm("Вы уверены, что хотите удалить запись?")) {
         fetch(`/database/${table}/${id}`, {
-            method: 'DELETE',
+            method: 'GET',
         })
             .then(response => {
                 if (!response.ok) throw new Error(`Ошибка при удалении записи из таблицы ${table}`);
@@ -230,22 +208,6 @@ function deleteRow(table, id) {
             })
             .catch(error => console.error('Ошибка удаления:', error));
     }
-}
-
-
-function generateClientRowsHtml(page) {
-    const rows = page.map(client => `
-        <tr>
-            <td>${client.firstName}</td>
-            <td>${client.lastName}</td>
-            <td>${client.phone || ''}</td>
-            <td>
-                <button class="btn btn-warning btn-sm" onclick="editRow('clients', ${client.id}, { /* данные */ })">Edit</button>
-                <button class="btn btn-danger btn-sm" onclick="deleteRow('clients', ${client.id})">Delete</button>
-            </td>
-        </tr>
-    `).join('');
-    return rows;
 }
 
 
