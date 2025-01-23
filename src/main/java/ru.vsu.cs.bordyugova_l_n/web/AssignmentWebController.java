@@ -73,8 +73,6 @@ public class AssignmentWebController {
             throw new RuntimeException("Date is not valid");
         }
 
-
-
         assignmentService.addAssignment(assignment);
         return "redirect:/database";
     }

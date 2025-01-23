@@ -76,3 +76,13 @@ body {
     background-color: #7A915D;
     color: #F4F3EF;
 }
+input:focus {
+    outline: none;
+    box-shadow: 0 0 5px #F7862A;
+}
+form input:focus, form textarea:focus, form select:focus {
+    outline: 2px solid #F7862A;
+}
+input:focus {
+    outline: 2px solid #F7862A !important;
+}

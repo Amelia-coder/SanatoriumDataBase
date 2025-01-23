@@ -111,12 +111,14 @@ public class WebController {
                     Page<Assignment> assignmentsPage = assignmentService.getAssignmentsForTicketId(PageRequest.of(page, size), ticketId);
                     Client client = ticketService.getTicketById(ticketId).getClient();
                     String clientName = client.getFirstName() + " " + " " + client.getFirstName();
+//                    System.out.println(assignmentService.getAssignmentsForStaffId(PageRequest.of(page, size), ticketId));
                     return generateResponseForAssignment(assignmentsPage, this::generateAssignmentsRowsHtml, clientName);
                 } else if (option[0].equals("data-staffId")) {
                     Integer staffId = Integer.parseInt(option[1]);
                     Page<Assignment> assignmentsPage = assignmentService.getAssignmentsForStaffId(PageRequest.of(page, size), staffId);
                     Staff staff = staffService.getStaffById(Long.valueOf(staffId));
                     String staffName = staff.getFirstName() + " " + " " + staff.getLastName();
+//                    System.out.println(assignmentService.getAssignmentsForStaffId(PageRequest.of(page, size), staffId));
                     return generateResponseForProcedure(assignmentsPage, this::generateStaffProceduresRowsHtml, staffName);
                 }
             }
@@ -262,6 +264,7 @@ public class WebController {
                     .append(assignment.getTicket().getClient().getLastName()).append("</td>")
                     .append("<td>").append(assignment.getOffice().getNumber()).append("</td>")
                     .append("<td>").append(assignment.getStartTime()).append("</td>")
+                    .append("<td>").append(assignment.getDate()).append("</td>")
 //                    .append("<td>").append(assignment.getDuration()).append("</td>")
                     .append("<td>")
                     .append("<button class='btn btn-warning btn-sm'>Edit</button>")
@@ -300,6 +303,7 @@ public class WebController {
                     .append(assignment.getStaff().getLastName()).append("</td>")
                     .append("<td>").append(assignment.getOffice().getNumber()).append("</td>")
                     .append("<td>").append(assignment.getStartTime()).append("</td>")
+                    .append("<td>").append(assignment.getDate()).append("</td>")
 //                    .append("<td>").append(assignment.getDuration()).append("</td>")
                     .append("<td>")
                     .append("<button class='btn btn-warning btn-sm'>Edit</button>")

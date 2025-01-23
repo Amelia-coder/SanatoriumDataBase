@@ -38,6 +38,7 @@ public class TicketWebController {
     @GetMapping("/new")
     public String showAddForm(Model model) {
         model.addAttribute("ticket", new Ticket());
+        model.addAttribute("clients", clientService.getAllClients());
         return "add-ticket";
     }
 
@@ -55,6 +56,7 @@ public class TicketWebController {
         ticketService.addTicket(ticket);
         return "redirect:/";
     }
+
 
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable Integer id, Model model) {
