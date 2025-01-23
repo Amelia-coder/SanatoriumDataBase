@@ -20,6 +20,6 @@ public interface TicketRepository extends JpaRepository<Ticket, Integer> {
 //""")
 //    Page<Ticket> searchTickets(String search, Pageable pageable);
     Page<Ticket> findAll(Pageable pageable);
-
+    List<Ticket> findAllByOrderByClientLastNameAsc();
 
 }

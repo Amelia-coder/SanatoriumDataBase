@@ -35,6 +35,7 @@ public class ClientWebController {
     @GetMapping("/new")
     public String showAddForm(Model model) {
         model.addAttribute("client", new Client());
+        model.addAttribute("rooms", roomService.getAllRooms());
         return "add-client";
     }
 

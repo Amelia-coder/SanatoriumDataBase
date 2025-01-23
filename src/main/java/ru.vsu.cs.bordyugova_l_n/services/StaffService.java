@@ -4,6 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import ru.vsu.cs.bordyugova_l_n.database.entities.Procedure;
 import ru.vsu.cs.bordyugova_l_n.database.entities.Staff;
 import ru.vsu.cs.bordyugova_l_n.database.repositories.StaffRepository;
 import ru.vsu.cs.bordyugova_l_n.exceptions.InvalidDataException;
@@ -49,6 +50,10 @@ public class StaffService {
 
     public Page<Staff> searchStaffs(String query, PageRequest pageRequest) {
         return repository.findByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCase(query, query, pageRequest);
+    }
+
+    public List<Staff> getAllStaffOrderByLastName() {
+        return repository.findAllByOrderByLastNameAscFirstNameAscMiddleNameAsc();
     }
 }
 

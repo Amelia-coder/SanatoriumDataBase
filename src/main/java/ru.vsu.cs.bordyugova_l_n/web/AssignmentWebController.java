@@ -37,6 +37,10 @@ public class AssignmentWebController {
     @GetMapping("/new")
     public String showAddForm(Model model) {
         model.addAttribute("assignment", new Assignment());
+        model.addAttribute("ticket", ticketService.getAllTicketsOrderByClientLastName());
+        model.addAttribute("procedures", procedureService.getProceduresOrderByName());
+        model.addAttribute("staff", staffService.getAllStaffOrderByLastName());
+        model.addAttribute("office", officeService.getAllOffices());
         return "add-assignment";
     }
 

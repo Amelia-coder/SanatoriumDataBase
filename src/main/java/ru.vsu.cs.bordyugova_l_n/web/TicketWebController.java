@@ -38,7 +38,7 @@ public class TicketWebController {
     @GetMapping("/new")
     public String showAddForm(Model model) {
         model.addAttribute("ticket", new Ticket());
-        model.addAttribute("clients", clientService.getAllClients());
+        model.addAttribute("clients", clientService.getAllClientsSortedByName());
         return "add-ticket";
     }
 

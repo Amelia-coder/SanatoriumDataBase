@@ -49,4 +49,8 @@ public class ProcedureService {
     public Page<Procedure> getProcedures(Pageable pageable) {
         return repository.findAll(pageable);
     }
+
+    public List<Procedure> getProceduresOrderByName(){
+        return repository.findAllByOrderByNameAsc();
+    }
 }

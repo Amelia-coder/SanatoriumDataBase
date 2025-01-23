@@ -39,7 +39,13 @@
     </div>
     <div class="mb-3">
       <label for="roomNumber" class="form-label">Room number</label>
-      <input type="text" id="roomNumber" name="roomNumber" th:field="*{room}" class="form-control" required>
+<!--      <input type="text" id="roomNumber" name="roomNumber" th:field="*{room}" class="form-control" required>-->
+      <select id="roomNumber" name="room" class="form-control" required>
+        <option value="" disabled selected>Select a room</option>
+        <option th:each="room : ${rooms}"
+                th:value="${room.number}"
+                th:text="${room.number}"></option>
+      </select>
     </div>
     <div class="mb-3">
       <label for="resortCard" class="form-label">Resort card</label>

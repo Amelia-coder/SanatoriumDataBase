@@ -12,5 +12,5 @@ import java.util.List;
 public interface ClientRepository extends JpaRepository<Client, Integer> {
     Page<Client> findAll(Pageable pageable);
     Page<Client> findByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCase(String firstName, String lastName, Pageable pageable);
-
+    List<Client> findAllByOrderByLastNameAscFirstNameAscMiddleNameAsc();
 }

@@ -56,6 +56,8 @@ public class ClientService {
         return repository.findByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCase(query, query, pageRequest);
     }
 
-
+    public List<Client> getAllClientsSortedByName() {
+        return repository.findAllByOrderByLastNameAscFirstNameAscMiddleNameAsc();
+    }
 
 }

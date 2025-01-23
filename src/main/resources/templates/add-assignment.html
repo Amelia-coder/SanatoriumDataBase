@@ -19,19 +19,43 @@
     <form action="/assignments" method="post" th:object="${assignment}" class="mt-4">
         <div class="mb-3">
             <label for="ticket_id" class="form-label">Ticket</label>
-            <input type="text" id="ticket_id" name="ticket_id" th:field="*{ticket}" class="form-control" required>
+<!--            <input type="text" id="ticket_id" name="ticket_id" th:field="*{ticket}" class="form-control" required>-->
+            <select id="ticket_id" name="ticket" class="form-control" required>
+                <option value="" disabled selected>Select a Ticket</option>
+                <option th:each="ticket : ${ticket}"
+                        th:value="${ticket.id}"
+                        th:text="${ticket.client.firstName} + ' ' + ${ticket.client.middleName} + ' ' + ${ticket.client.lastName}"></option>
+            </select>
         </div>
         <div class="mb-3">
             <label for="procedure" class="form-label">Procedure</label>
-            <input type="text" id="procedure" name="procedure" th:field="*{procedure}" class="form-control" required>
+<!--            <input type="text" id="procedure" name="procedure" th:field="*{procedure}" class="form-control" required>-->
+            <select id="procedure" name="procedure" class="form-control" required>
+                <option value="" disabled selected>Select a procedure</option>
+                <option th:each="procedure : ${procedures}"
+                        th:value="${procedure.id}"
+                        th:text="${procedure.name}"></option>
+            </select>
         </div>
         <div class="mb-3">
             <label for="staff" class="form-label">Staff</label>
-            <input type="text" id="staff" name="staff" th:field="*{staff}" class="form-control" required>
+<!--            <input type="text" id="staff" name="staff" th:field="*{staff}" class="form-control" required>-->
+            <select id="staff" name="staff" class="form-control" required>
+                <option value="" disabled selected>Select a procedure</option>
+                <option th:each="staff : ${staff}"
+                        th:value="${staff.id}"
+                        th:text="${staff.firstName} + ' ' + ${staff.middleName} + ' ' + ${staff.lastName}"></option>
+            </select>
         </div>
         <div class="mb-3">
             <label for="office" class="form-label">Office</label>
-            <input type="text" id="office" name="office" th:field="*{office}" class="form-control" required>
+<!--            <input type="text" id="office" name="office" th:field="*{office}" class="form-control" required>-->
+            <select id="office" name="office" class="form-control" required>
+                <option value="" disabled selected>Select a procedure</option>
+                <option th:each="office : ${office}"
+                        th:value="${office.number}"
+                        th:text="${office.number}"></option>
+            </select>
         </div>
         <div class="mb-3">
             <label for="startTime" class="form-label">Time</label>

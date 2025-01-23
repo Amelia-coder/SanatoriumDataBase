@@ -46,6 +46,9 @@ public class TicketService {
         return repository.findAll(pageable);
     }
 
+    public List<Ticket> getAllTicketsOrderByClientLastName() {
+        return repository.findAllByOrderByClientLastNameAsc();
+    }
 
 //    public Page<Ticket> searchTickets(String search, Pageable pageable) {
 //        return repository.searchTickets(search, pageable);
