@@ -83,6 +83,13 @@ document.addEventListener('DOMContentLoaded', function () {
                 const id= event.target.getAttribute('data-id');
                 window.location.replace("http://localhost:8081/clients/edit/" + id);
             }
+
+            if (event.target.matches('.btn-editTicket')) {
+                const id = event.target.getAttribute('data-id');
+                window.location.replace("http://localhost:8081/tickets/edit/" + id);
+            }
+
+
         }
 
         // Обработка кнопки удаления
@@ -91,6 +98,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const tableName = currentTable;
 
             deleteRow(tableName, rowId);
+            // window.location.replace("http://localhost:8081/clients/delete/" + id);
         }
     });
 
@@ -154,46 +162,46 @@ function renderPagination(data, table) {
 }
 
 
-// Функция поиска данных в текущей таблице
-function searchTable(query) {
-    const url = '/database/${currentTable}/search?query=${encodeURIComponent(query)}';
-    fetch(url)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Ошибка поиска');
-            }
-            return response.json();
-        })
-        .then(data => {
-            const tableContentId = '${currentTable}TableContent';
-            const targetElement = document.getElementById(tableContentId);
-            if (targetElement) {
-                targetElement.innerHTML = generateSearchResultsHtml(data);
-            } else {
-                console.error('Элемент с ID "${tableContentId}" не найден.');
-            }
-            const paginationId = '${currentTable}Pagination';
-            document.getElementById(paginationId).innerHTML = '';
-        })
-        .catch(error => console.error('Ошибка поиска:', error));
-}
+// // Функция поиска данных в текущей таблице
+// function searchTable(query) {
+//     const url = '/database/${currentTable}/search?query=${encodeURIComponent(query)}';
+//     fetch(url)
+//         .then(response => {
+//             if (!response.ok) {
+//                 throw new Error('Ошибка поиска');
+//             }
+//             return response.json();
+//         })
+//         .then(data => {
+//             const tableContentId = '${currentTable}TableContent';
+//             const targetElement = document.getElementById(tableContentId);
+//             if (targetElement) {
+//                 targetElement.innerHTML = generateSearchResultsHtml(data);
+//             } else {
+//                 console.error('Элемент с ID "${tableContentId}" не найден.');
+//             }
+//             const paginationId = '${currentTable}Pagination';
+//             document.getElementById(paginationId).innerHTML = '';
+//         })
+//         .catch(error => console.error('Ошибка поиска:', error));
+// }
 
-// Генерация HTML для результатов поиска
-function generateSearchResultsHtml(data) {
-    return data.length > 0
-        ? data.map(item => `
-            <tr>
-                <td>${item.id}</td>
-                <td>${item.firstName}</td>
-                <td>${item.lastName}</td>
-                <td>
-                    <button class='btn btn-warning btn-sm' onclick='editItem(${item.id})'>Edit</button>
-                    <button class='btn btn-danger btn-sm' onclick='deleteItem(${item.id})'>Delete</button>
-                </td>
-            </tr>
-        `).join('')
-        : '<tr><td colspan="4">Ничего не найдено</td></tr>';
-}
+// // Генерация HTML для результатов поиска
+// function generateSearchResultsHtml(data) {
+//     return data.length > 0
+//         ? data.map(item => `
+//             <tr>
+//                 <td>${item.id}</td>
+//                 <td>${item.firstName}</td>
+//                 <td>${item.lastName}</td>
+//                 <td>
+//                     <button class='btn btn-warning btn-sm' onclick='editItem(${item.id})'>Edit</button>
+//                     <button class='btn btn-danger btn-sm' onclick='deleteItem(${item.id})'>Delete</button>
+//                 </td>
+//             </tr>
+//         `).join('')
+//         : '<tr><td colspan="4">Ничего не найдено</td></tr>';
+// }
 
 
 

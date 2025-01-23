@@ -170,7 +170,7 @@ public class WebController {
                     .append("<td>").append(client.getRoom().getNumber()).append("</td>")
                     .append("<td>")
                     .append("<button class='btn btn-warning btn-sm btn-editClient' data-id='" + client.getId() + "'>Edit</button>")
-                    .append("<button class='btn btn-danger btn-sm' data-id='" + client.getId() + "'>Delete</button>")
+                    .append("<button class='btn btn-danger btn-sm' btn-deleteClient data-id='" + client.getId() + "'>Delete</button>")
                     .append("</td>")
                     .append("</tr>");
         }
@@ -185,9 +185,9 @@ public class WebController {
                     .append("<td>").append(room.getBuilding()).append("</td>")
                     .append("<td>").append(room.getFloor()).append("</td>")
 //                    .append("<td>").append(room.getClients().size()).append("</td>")
-                    .append("<td>")
-                    .append("<button class='btn btn-warning btn-sm'>Edit</button>")
-                    .append("<button class='btn btn-danger btn-sm'>Delete</button>")
+//                    .append("<td>")
+//                    .append("<button class='btn btn-warning btn-sm'>Edit</button>")
+//                    .append("<button class='btn btn-danger btn-sm'>Delete</button>")
                     .append("</td>")
                     .append("</tr>");
         }
@@ -208,8 +208,8 @@ public class WebController {
                     .append("<td>").append(ticket.getCheckOutDate()).append("</td>")
                     .append("<td>")
                     .append("<button class='btn btn-success btn-sm' data-entity=assignment data-ticketId= " + ticket.getId() + ">Show Assignment</button>")
-                    .append("<button class='btn btn-warning btn-sm'>Edit</button>")
-                    .append("<button class='btn btn-danger btn-sm'>Delete</button>")
+                    .append("<button class='btn btn-warning btn-sm btn-editTicket' data-id= " + ticket.getId() + ">Edit</button>")
+                    .append("<button class='btn btn-danger btn-sm' btn-deleteTicket data-id= " + ticket.getId() + ">Delete</button>")
                     .append("</td>")
                     .append("</tr>");
         }
@@ -223,9 +223,9 @@ public class WebController {
                     .append("<td>").append(office.getNumber()).append("</td>")
                     .append("<td>").append(office.getBuilding()).append("</td>")
                     .append("<td>").append(office.getFloor()).append("</td>")
-                    .append("<td>")
-                    .append("<button class='btn btn-warning btn-sm' >Edit</button>")
-                    .append("<button class='btn btn-danger btn-sm' >Delete</button>")
+//                    .append("<td>")
+//                    .append("<button class='btn btn-warning btn-sm' >Edit</button>")
+//                    .append("<button class='btn btn-danger btn-sm' >Delete</button>")
                     .append("</td>")
                     .append("</tr>");
         }
@@ -244,8 +244,8 @@ public class WebController {
                     .append("<td>").append(staff.getPosition() != null ? staff.getPosition() : "").append("</td>")
                     .append("<td>")
                     .append("<button class='btn btn-success btn-sm' data-entity=assignment data-staffId= " + staff.getId() + ">Show Assignment</button>")
-                    .append("<button class='btn btn-warning btn-sm'>Edit</button>")
-                    .append("<button class='btn btn-danger btn-sm'>Delete</button>")
+//                    .append("<button class='btn btn-warning btn-sm'>Edit</button>")
+//                    .append("<button class='btn btn-danger btn-sm'>Delete</button>")
                     .append("</td>")
                     .append("</tr>");
         }
@@ -267,8 +267,8 @@ public class WebController {
                     .append("<td>").append(assignment.getDate()).append("</td>")
 //                    .append("<td>").append(assignment.getDuration()).append("</td>")
                     .append("<td>")
-                    .append("<button class='btn btn-warning btn-sm'>Edit</button>")
-                    .append("<button class='btn btn-danger btn-sm'>Delete</button>")
+                    .append("<button class='btn btn-warning btn-sm' btn-editAssignmentStaff>Edit</button>")
+                    .append("<button class='btn btn-danger btn-sm' btn-deleteAssignmentStaff>Delete</button>")
                     .append("</td>")
                     .append("</tr>");
         }
@@ -282,9 +282,9 @@ public class WebController {
                     .append("<td>").append(procedure.getId()).append("</td>")
                     .append("<td>").append(procedure.getName()).append("</td>")
                     .append("<td>").append(procedure.getDescription()).append("</td>")
-                    .append("<td>")
-                    .append("<button class='btn btn-warning btn-sm'>Edit</button>")
-                    .append("<button class='btn btn-danger btn-sm'>Delete</button>")
+//                    .append("<td>")
+//                    .append("<button class='btn btn-warning btn-sm'>Edit</button>")
+//                    .append("<button class='btn btn-danger btn-sm'>Delete</button>")
                     .append("</td>")
                     .append("</tr>");
         }
@@ -306,8 +306,8 @@ public class WebController {
                     .append("<td>").append(assignment.getDate()).append("</td>")
 //                    .append("<td>").append(assignment.getDuration()).append("</td>")
                     .append("<td>")
-                    .append("<button class='btn btn-warning btn-sm'>Edit</button>")
-                    .append("<button class='btn btn-danger btn-sm'>Delete</button>")
+                    .append("<button class='btn btn-warning btn-sm' btn-editAssignmentTicket>Edit</button>")
+                    .append("<button class='btn btn-danger btn-sm' btn-deleteAssignmentTicket>Delete</button>")
                     .append("</td>")
                     .append("</tr>");
         }

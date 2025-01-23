@@ -65,9 +65,13 @@ public class TicketWebController {
         return "edit-ticket";
     }
 
-    @PostMapping("/update/{id}")
-    public String updateTicket(@PathVariable Integer id, @ModelAttribute Ticket updatedTicket) {
-        ticketService.updateTicket(id, updatedTicket);
+    @PostMapping("/update")
+    public String updateTicket(@RequestBody TicketDTO ticketDTO) {
+        Ticket updatedTticket = new Ticket();
+        updatedTticket.setCheckInDate(ticketDTO.getCheckInDate());
+        updatedTticket.setCheckOutDate(ticketDTO.getCheckOutDate());
+//
+        ticketService.updateTicket(ticketDTO.getId(), updatedTticket);
         return "redirect:/tickets";
     }
 
